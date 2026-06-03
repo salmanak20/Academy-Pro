@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,13 +15,18 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
-    // Initialize Firebase
+    // Initialize Firebase with timeout to prevent indefinite hang on web
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
+    ).timeout(
+      const Duration(seconds: 15),
+      onTimeout: () {
+        throw TimeoutException('Firebase initialization timed out. Check your internet connection.');
+      },
     );
 
     debugPrint("Firebase initialized successfully");
-
+    
     // Auth persistence
     if (!kIsWeb) {
       try {
