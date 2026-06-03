@@ -1,0 +1,66 @@
+name: Deploy Academy Pro to Vercel
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build Flutter Web
+        run: |
+          flutter build web --release \
+            --dart-define=PRODUCTION=true \
+            --dart-define=APP_URL=${{ secrets.APP_URL }} \
+            --dart-define=SUPPORT_EMAIL=${{ secrets.SUPPORT_EMAIL }} \
+            --no-wasm-dry-run
+
+      - name: Prepare Vercel Build Output
+        run: |
+          mkdir -p .vercel/output/static
+          cp -r build/web/* .vercel/output/static/
+          cat <<EOF > .vercel/output/config.json
+          {
+            "version": 3,
+            "routes": [
+              {
+                "src": "/assets/(.*)",
+                "headers": { "Cache-Control": "public, max-age=31536000, immutable" },
+                "continue": true
+              },
+              {
+                "src": "/(flutter_bootstrap.js|flutter.js|main.dart.js|index.html)",
+                "headers": { "Cache-Control": "public, max-age=0, must-revalidate" },
+                "continue": true
+              },
+              {
+                "src": "/(.*)",
+                "dest": "/index.html"
+              }
+            ]
+          }
+          EOF
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prebuilt --prod'
+          working-directory: ./

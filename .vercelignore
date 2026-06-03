@@ -1,0 +1,9 @@
+.git
+.idea
+.dart_tool
+build/
+android/
+ios/
+windows/
+macos/
+linux/

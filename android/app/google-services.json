@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "572804404960",
+    "project_id": "academypro-12",
+    "storage_bucket": "academypro-12.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:572804404960:android:16cf75f466222d78be6285",
+        "android_client_info": {
+          "package_name": "com.example.scholars_hub_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAD0Rw581fP45P9UGAEg2YnFQeeQkd1FM0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
