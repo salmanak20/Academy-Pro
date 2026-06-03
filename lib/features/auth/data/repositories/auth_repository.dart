@@ -21,15 +21,29 @@ class AuthRepository {
   Future<AppUser?> fetchUserData(String uid) async {
     try {
       print('DEBUG: Fetching user data for UID: $uid');
-      final doc = await _firestore.collection('users').doc(uid).get();
+      // Added a timeout because if Firestore is not created or blocked, it hangs and throws 'offline'
+      final doc = await _firestore.collection('users').doc(uid).get().timeout(
+        const Duration(seconds: 10),
+        onTimeout: () => throw Exception('Database connection timed out.'),
+      );
+      
       if (!doc.exists || doc.data() == null) {
         print('DEBUG: User doc does not exist or data is null');
         return null;
       }
       print('DEBUG: Successfully fetched user data: ${doc.data()}');
       return AppUser.fromJson({'uid': uid, ...doc.data()!});
+    } on FirebaseException catch (e) {
+      print('DEBUG: FirebaseException in fetchUserData: \${e.code} - \${e.message}');
+      if (e.code == 'unavailable') {
+        throw Exception('Cannot connect to database. Please ensure Firestore is created in the Firebase Console and disable adblockers.');
+      }
+      rethrow;
     } catch (e) {
       print('DEBUG: Error in fetchUserData: $e');
+      if (e.toString().contains('timed out')) {
+        throw Exception('Cannot connect to database. Please ensure Firestore is created in the Firebase Console and disable adblockers.');
+      }
       rethrow;
     }
   }
