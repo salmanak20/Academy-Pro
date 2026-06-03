@@ -1,154 +1,127 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'firebase_options.dart';
 import 'core/theme/app_theme.dart';
 import 'core/routing/app_router.dart';
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<void> main() async {
+void main() {
+  // Ensure bindings are initialized for web
   WidgetsFlutterBinding.ensureInitialized();
+  
+  runApp(
+    const ProviderScope(
+      child: AcademyProApp(),
+    ),
+  );
+}
 
+/// Provider to handle the async initialization of Firebase
+final firebaseInitializerProvider = FutureProvider<void>((ref) async {
   try {
-    // Initialize Firebase with timeout to prevent indefinite hang on web
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
-    ).timeout(
-      const Duration(seconds: 15),
-      onTimeout: () {
-        throw TimeoutException('Firebase initialization timed out. Check your internet connection.');
-      },
-    );
+    ).timeout(const Duration(seconds: 15));
 
-    debugPrint("Firebase initialized successfully");
-    
-    // Auth persistence
-    if (!kIsWeb) {
-      try {
-        await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
-      } catch (e) {
-        debugPrint("Auth persistence error: $e");
-      }
+    if (kIsWeb) {
+      FirebaseFirestore.instance.settings = const Settings(
+        persistenceEnabled: false,
+        sslEnabled: true,
+      );
     }
-
-    // Firestore config
-    await _configureFirestore();
-
-    runApp(
-      const ProviderScope(
-        child: AcademyProApp(),
-      ),
-    );
-  } catch (e, stackTrace) {
-    debugPrint("Startup error: $e");
-    debugPrint(stackTrace.toString());
-
-    runApp(
-      FirebaseStartupErrorApp(error: e),
-    );
+  } catch (e) {
+    debugPrint("Firebase init error: $e");
+    rethrow;
   }
-}
-
-Future<void> _configureFirestore() async {
-  final firestore = FirebaseFirestore.instance;
-
-  if (kIsWeb) {
-    // Disable persistence on web to avoid offline cache issues
-    firestore.settings = const Settings(
-      persistenceEnabled: false,
-      sslEnabled: true,
-    );
-
-    debugPrint("Firestore configured for WEB");
-  } else {
-    firestore.settings = const Settings(
-      persistenceEnabled: true,
-      sslEnabled: true,
-    );
-
-    debugPrint("Firestore configured for MOBILE");
-  }
-}
+});
 
 class AcademyProApp extends ConsumerWidget {
   const AcademyProApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(appRouterProvider);
+    final firebaseInit = ref.watch(firebaseInitializerProvider);
 
-    return MaterialApp.router(
-      title: 'Academy Pro',
-      debugShowCheckedModeBanner: false,
-
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
-
-      routerConfig: router,
-    );
-  }
-}
-
-class FirebaseStartupErrorApp extends StatelessWidget {
-  final Object error;
-
-  const FirebaseStartupErrorApp({
-    super.key,
-    required this.error,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Academy Pro',
-
-      home: Scaffold(
-        body: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: 520,
-            ),
+    return firebaseInit.when(
+      data: (_) {
+        final router = ref.watch(appRouterProvider);
+        return MaterialApp.router(
+          title: 'Academy Pro',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeMode.system,
+          routerConfig: router,
+        );
+      },
+      loading: () => const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: InitialLoadingScreen(),
+      ),
+      error: (error, stack) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          body: Center(
             child: Padding(
               padding: const EdgeInsets.all(24),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(
-                    Icons.cloud_off,
-                    size: 60,
-                    color: Colors.red,
-                  ),
-
-                  const SizedBox(height: 20),
-
+                  const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                  const SizedBox(height: 16),
                   const Text(
-                    'Academy Pro could not connect to Firebase',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    'Failed to start Academy Pro',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-
-                  const SizedBox(height: 12),
-
-                  Text(
-                    error.toString(),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.black54,
-                    ),
+                  const SizedBox(height: 8),
+                  Text(error.toString(), textAlign: TextAlign.center),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Restart the app
+                      ref.invalidate(firebaseInitializerProvider);
+                    },
+                    child: const Text('Try Again'),
                   ),
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class InitialLoadingScreen extends StatelessWidget {
+  const InitialLoadingScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF0A2E73), Color(0xFF001A4D)],
+          ),
+        ),
+        child: const Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFFCE4B)),
+              ),
+              SizedBox(height: 24),
+              Text(
+                'Initializing Academy Pro...',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ],
           ),
         ),
       ),

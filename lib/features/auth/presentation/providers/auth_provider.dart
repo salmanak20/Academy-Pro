@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../domain/entities/app_user.dart';
+import 'dart:async';
 
 part 'auth_provider.g.dart';
 
@@ -10,17 +11,16 @@ class AuthController extends _$AuthController {
   FutureOr<AppUser?> build() async {
     try {
       final repo = ref.read(authRepositoryProvider);
-      // Add a timeout to prevent hanging on splash screen if Firebase/Firestore is unresponsive
+      // Aggressive timeout for initial user check
       return await repo.getCurrentUser().timeout(
-        const Duration(seconds: 10),
+        const Duration(seconds: 7),
         onTimeout: () {
-          print('DEBUG: AuthController build timed out');
+          print('DEBUG: AuthController.build timed out after 7s');
           return null;
         },
       );
     } catch (e) {
-      print('DEBUG: AuthController build error: $e');
-      // Return null if Firebase is not initialized or error occurs to avoid getting stuck
+      print('DEBUG: AuthController.build error: $e');
       return null;
     }
   }
@@ -32,9 +32,7 @@ class AuthController extends _$AuthController {
       final user = await repo.signInWithEmailPassword(email, password);
       state = AsyncValue.data(user);
     } catch (e) {
-      // Reset to unauthenticated so the router doesn't get stuck on splash
       state = const AsyncValue.data(null);
-      // Re-throw so the login screen UI can catch and display the error
       rethrow;
     }
   }

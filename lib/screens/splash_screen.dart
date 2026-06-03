@@ -45,7 +45,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with TickerProvider
   }
   
   void _startMinTimer() async {
-    await Future.delayed(const Duration(seconds: 3));
+    // Standard splash duration
+    await Future.delayed(const Duration(seconds: 4));
     if (mounted) {
       setState(() {
         _minTimeElapsed = true;
@@ -57,10 +58,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with TickerProvider
   void _navigateIfReady() {
     if (!_minTimeElapsed) return;
     
-    final isAuthLoading = ref.read(authControllerProvider).isLoading;
-    if (!isAuthLoading) {
+    final authState = ref.read(authControllerProvider);
+    
+    // If not loading anymore, we can proceed
+    if (!authState.isLoading) {
       if (mounted) {
-        context.go('/login');
+        // We use a general route or dashboard route, router will redirect
+        context.go('/admin/dashboard');
       }
     }
   }
@@ -74,8 +78,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with TickerProvider
 
   @override
   Widget build(BuildContext context) {
+    // Listen for auth state completion
     ref.listen(authControllerProvider, (previous, next) {
-      if (previous?.isLoading == true && next.isLoading == false) {
+      if (!next.isLoading) {
         _navigateIfReady();
       }
     });
@@ -117,6 +122,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with TickerProvider
                       child: Image.asset(
                         'assets/logo.png',
                         fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) => const Icon(Icons.school, size: 100, color: Colors.white),
                       ),
                     ),
                   ),
