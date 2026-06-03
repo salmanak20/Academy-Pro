@@ -77,7 +77,27 @@ class AuthRepository {
       }
       
       if (appUser == null) {
-        print('DEBUG: AppUser is null. Signing out.');
+        print('DEBUG: AppUser is null. Checking if email matches system admin.');
+        // Auto-bootstrap: Create SuperAdmin ONLY if it matches your specific email
+        // This avoids querying the whole collection, which causes "missing permissions" errors.
+        if (user.email?.toLowerCase() == 'salmanyousafzai312@gmail.com') {
+          print('DEBUG: Admin email detected. Auto-creating SuperAdmin profile.');
+          final adminData = {
+            'uid': user.uid,
+            'email': user.email ?? '',
+            'role': 'SuperAdmin',
+            'name': 'Salman Yousafzai',
+          };
+          
+          await _firestore.collection('users').doc(user.uid).set({
+            ...adminData,
+            'createdAt': FieldValue.serverTimestamp(),
+          });
+          
+          return AppUser.fromJson({'uid': user.uid, ...adminData});
+        }
+
+        print('DEBUG: AppUser is null and not admin. Signing out.');
         await _auth.signOut();
         throw Exception('Your account profile is missing. Contact support.');
       }
