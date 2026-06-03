@@ -10,9 +10,17 @@ class AuthController extends _$AuthController {
   FutureOr<AppUser?> build() async {
     try {
       final repo = ref.read(authRepositoryProvider);
-      return await repo.getCurrentUser();
+      // Add a timeout to prevent hanging on splash screen if Firebase/Firestore is unresponsive
+      return await repo.getCurrentUser().timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          print('DEBUG: AuthController build timed out');
+          return null;
+        },
+      );
     } catch (e) {
-      // Return null if Firebase is not initialized to avoid getting stuck
+      print('DEBUG: AuthController build error: $e');
+      // Return null if Firebase is not initialized or error occurs to avoid getting stuck
       return null;
     }
   }
