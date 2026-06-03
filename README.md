@@ -1,6 +1,11 @@
 # academy_pro
 
+[![Deploy Academy Pro to Vercel](https://github.com/salmanak20/Academy-Pro/actions/workflows/deploy.yml/badge.svg)](https://github.com/salmanak20/Academy-Pro/actions/workflows/deploy.yml)
+
 A new Flutter project.
+
+## CI/CD Pipeline
+This project is automatically built and deployed to Vercel via GitHub Actions on every push to the `main` branch.
 
 ## Getting Started
 
