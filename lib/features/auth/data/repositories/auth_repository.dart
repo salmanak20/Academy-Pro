@@ -80,13 +80,13 @@ class AuthRepository {
         print('DEBUG: AppUser is null. Checking if email matches system admin.');
         // Auto-bootstrap: Create SuperAdmin ONLY if it matches your specific email
         // This avoids querying the whole collection, which causes "missing permissions" errors.
-        if (user.email?.toLowerCase() == 'salmanyousafzai312@gmail.com') {
+        if (user.email?.toLowerCase() == 'thinkedgedigital@gmail.com') {
           print('DEBUG: Admin email detected. Auto-creating SuperAdmin profile.');
           final adminData = {
             'uid': user.uid,
             'email': user.email ?? '',
             'role': 'SuperAdmin',
-            'name': 'Salman Yousafzai',
+            'name': 'System Admin',
           };
           
           await _firestore.collection('users').doc(user.uid).set({
