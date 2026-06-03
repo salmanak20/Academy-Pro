@@ -8,7 +8,6 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() {
-  // Ensure bindings are initialized for web
   WidgetsFlutterBinding.ensureInitialized();
   
   runApp(
@@ -44,6 +43,7 @@ class AcademyProApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final firebaseInit = ref.watch(firebaseInitializerProvider);
 
+    // Use a single MaterialApp.router at the top level
     return firebaseInit.when(
       data: (_) {
         final router = ref.watch(appRouterProvider);
@@ -56,12 +56,14 @@ class AcademyProApp extends ConsumerWidget {
           routerConfig: router,
         );
       },
-      loading: () => const MaterialApp(
+      loading: () => MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: InitialLoadingScreen(),
+        theme: AppTheme.lightTheme,
+        home: const InitialLoadingScreen(),
       ),
       error: (error, stack) => MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
         home: Scaffold(
           body: Center(
             child: Padding(
@@ -80,7 +82,6 @@ class AcademyProApp extends ConsumerWidget {
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () {
-                      // Restart the app
                       ref.invalidate(firebaseInitializerProvider);
                     },
                     child: const Text('Try Again'),
@@ -101,28 +102,24 @@ class InitialLoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF0A2E73), Color(0xFF001A4D)],
-          ),
-        ),
-        child: const Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFFCE4B)),
+      backgroundColor: const Color(0xFF001A4D),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFFCE4B)),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Initializing Academy Pro...',
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.8),
+                fontSize: 16,
+                letterSpacing: 1.2,
               ),
-              SizedBox(height: 24),
-              Text(
-                'Initializing Academy Pro...',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

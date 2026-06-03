@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../features/auth/presentation/providers/auth_provider.dart';
@@ -23,10 +24,11 @@ part 'app_router.g.dart';
 
 @riverpod
 GoRouter appRouter(Ref ref) {
-  final listenable = ValueNotifier<bool>(false);
+  // Use a simpler notify logic to avoid ProviderSubscription errors
+  final listenable = ValueNotifier<int>(0);
   
-  ref.listen(authControllerProvider, (_, _) {
-    listenable.value = !listenable.value;
+  ref.listen(authControllerProvider, (previous, next) {
+    listenable.value++;
   });
 
   return GoRouter(
@@ -36,30 +38,24 @@ GoRouter appRouter(Ref ref) {
       final authState = ref.read(authControllerProvider);
       final path = state.uri.path;
 
+      // Handle loading state
       if (authState.isLoading) {
-        if (path == '/login') {
-          return null; // Stay on login screen to show the spinner
-        }
-        return path == '/splash' ? null : '/splash';
+        return (path == '/splash' || path == '/login') ? null : '/splash';
       }
 
-      final user = authState.hasValue ? authState.value : null;
+      final user = authState.value;
 
-      // Let the splash screen manage its own exit after animations
-      if (path == '/splash') {
-        return null;
-      }
-
-      final isLoginRoute = path == '/login';
-
+      // Redirect logic
       if (user == null) {
-        return isLoginRoute ? null : '/login';
+        return (path == '/login' || path == '/splash') ? null : '/login';
       }
 
-      if (isLoginRoute) {
+      // If user is logged in but on splash or login, send them home
+      if (path == '/splash' || path == '/login') {
         return _homeForRole(user.role);
       }
 
+      // Role protection
       if (path.startsWith('/admin')) {
         final normalizedRole = user.role.toLowerCase();
         if (normalizedRole != AppConstants.roleSuperAdmin.toLowerCase() && normalizedRole != 'admin') {
@@ -83,14 +79,7 @@ GoRouter appRouter(Ref ref) {
       ),
       GoRoute(
         path: '/login',
-        pageBuilder: (context, state) => CustomTransitionPage(
-          key: state.pageKey,
-          child: const LoginScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(opacity: animation, child: child);
-          },
-          transitionDuration: const Duration(milliseconds: 1000),
-        ),
+        builder: (context, state) => const LoginScreen(),
       ),
       // Super Admin Routes
       GoRoute(
