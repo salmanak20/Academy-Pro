@@ -5,7 +5,7 @@
 A new Flutter project.
 
 ## CI/CD Pipeline
-This project is automatically built and deployed to Vercel via GitHub Actions on every push to the `main` branch.
+This project is automatically built and deployed to Vercel via GitHub Actions on every push to the `main` branch. The pipeline uses the Vercel Build Output API for optimal performance and routing.
 
 ## Getting Started
 
