@@ -9,7 +9,7 @@ Stream<List<Academy>> academiesStream(Ref ref) {
   return ref.watch(academyRepositoryProvider).watchAcademies();
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class AcademyController extends _$AcademyController {
   @override
   FutureOr<void> build() {}

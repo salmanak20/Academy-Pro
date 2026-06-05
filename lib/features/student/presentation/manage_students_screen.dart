@@ -150,6 +150,7 @@ class ManageStudentsScreen extends ConsumerWidget {
                           );
                     }
 
+                    if (!context.mounted) return;
                     final state = ref.read(studentControllerProvider);
                     Navigator.pop(dialogContext); // pop loading
 

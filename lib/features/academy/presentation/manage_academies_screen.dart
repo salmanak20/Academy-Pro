@@ -89,8 +89,8 @@ class ManageAcademiesScreen extends ConsumerWidget {
             onPressed: () async {
               Navigator.pop(dialogContext);
               await ref.read(academyControllerProvider.notifier).deleteAcademy(academy.id);
-              final state = ref.read(academyControllerProvider);
               if (!context.mounted) return;
+              final state = ref.read(academyControllerProvider);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
@@ -193,6 +193,7 @@ class ManageAcademiesScreen extends ConsumerWidget {
                           );
                     }
 
+                    if (!context.mounted) return;
                     // Check for error in the state
                     final state = ref.read(academyControllerProvider);
                     

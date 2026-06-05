@@ -59,7 +59,7 @@ final class AcademyControllerProvider
         argument: null,
         retry: null,
         name: r'academyControllerProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -72,7 +72,7 @@ final class AcademyControllerProvider
   AcademyController create() => AcademyController();
 }
 
-String _$academyControllerHash() => r'd0512852bed7cd79caa6711ccc014dce1bbdbdbb';
+String _$academyControllerHash() => r'9a03fa4508bdd3770046b629e00f94c3140641b5';
 
 abstract class _$AcademyController extends $AsyncNotifier<void> {
   FutureOr<void> build();

@@ -59,7 +59,7 @@ final class StudentControllerProvider
         argument: null,
         retry: null,
         name: r'studentControllerProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -72,7 +72,7 @@ final class StudentControllerProvider
   StudentController create() => StudentController();
 }
 
-String _$studentControllerHash() => r'68c2b691c7d61842635ddfba3d5ebf27621b4ad2';
+String _$studentControllerHash() => r'50699df2c99509698da99984587a6952cd1ef2a7';
 
 abstract class _$StudentController extends $AsyncNotifier<void> {
   FutureOr<void> build();

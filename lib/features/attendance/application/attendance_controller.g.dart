@@ -111,7 +111,7 @@ final class AttendanceControllerProvider
         argument: null,
         retry: null,
         name: r'attendanceControllerProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -125,7 +125,7 @@ final class AttendanceControllerProvider
 }
 
 String _$attendanceControllerHash() =>
-    r'2070bb8bcae14877f134f01390fa3f04ebfc819b';
+    r'298695f9b95b333f6aef18aaf7899d6b13a81660';
 
 abstract class _$AttendanceController extends $AsyncNotifier<void> {
   FutureOr<void> build();

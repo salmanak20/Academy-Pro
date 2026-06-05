@@ -59,7 +59,7 @@ final class TeacherControllerProvider
         argument: null,
         retry: null,
         name: r'teacherControllerProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -72,7 +72,7 @@ final class TeacherControllerProvider
   TeacherController create() => TeacherController();
 }
 
-String _$teacherControllerHash() => r'af62b1d06191217fbc41422a262eb16d28c81dd3';
+String _$teacherControllerHash() => r'4f305c64cd383e960da4d284ad2d2a4f35d1f7db';
 
 abstract class _$TeacherController extends $AsyncNotifier<void> {
   FutureOr<void> build();

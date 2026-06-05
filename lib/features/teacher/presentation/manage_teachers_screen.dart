@@ -146,6 +146,7 @@ class ManageTeachersScreen extends ConsumerWidget {
                           );
                     }
                     
+                    if (!context.mounted) return;
                     final state = ref.read(teacherControllerProvider);
                     Navigator.pop(dialogContext); // pop loading
 

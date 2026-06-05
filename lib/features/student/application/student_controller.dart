@@ -14,7 +14,7 @@ Stream<List<Student>> studentsStream(Ref ref) {
   return ref.watch(studentRepositoryProvider).watchStudents(user.academyId!);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class StudentController extends _$StudentController {
   @override
   FutureOr<void> build() {}

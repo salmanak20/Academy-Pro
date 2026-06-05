@@ -60,7 +60,7 @@ Stream<List<Attendance>> attendanceStream(Ref ref) {
       );
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class AttendanceController extends _$AttendanceController {
   @override
   FutureOr<void> build() {}
