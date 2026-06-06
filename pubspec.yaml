@@ -57,6 +57,7 @@ dependencies:
   uuid: any
   shared_preferences: any
   dartz: any
+  google_fonts: ^8.1.0
 
 dev_dependencies:
   flutter_test:
