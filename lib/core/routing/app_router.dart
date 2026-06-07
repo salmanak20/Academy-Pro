@@ -106,6 +106,13 @@ GoRouter appRouter(Ref ref) {
         path: '/admin/attendance',
         redirect: (context, state) => '/principal/attendance',
       ),
+      GoRoute(
+        path: '/admin/settings',
+        builder: (context, state) => Scaffold(
+          appBar: AppBar(title: const Text('Settings')),
+          body: const Center(child: Text('Settings Coming Soon')),
+        ),
+      ),
       // Principal Routes
       GoRoute(
         path: '/principal/dashboard',
@@ -130,6 +137,13 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: '/principal/change-password',
         builder: (context, state) => const ChangePasswordScreen(),
+      ),
+      GoRoute(
+        path: '/principal/reports',
+        builder: (context, state) => Scaffold(
+          appBar: AppBar(title: const Text('Reports')),
+          body: const Center(child: Text('Reports Coming Soon')),
+        ),
       ),
     ],
   );
