@@ -82,10 +82,11 @@ class _Header extends StatelessWidget {
       height: 64,
       padding: const EdgeInsets.symmetric(horizontal: 24),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.7),
-        border: Border(
+        color: AppColors.surface.withOpacity(0.9),
+        border: const Border(
           bottom: BorderSide(
-            color: AppColors.outlineVariant.withOpacity(0.3),
+            color: AppColors.outlineVariant,
+            width: 0.5,
           ),
         ),
       ),
@@ -101,6 +102,7 @@ class _Header extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
+                  color: AppColors.primary,
                 ),
           ),
           const Spacer(),

@@ -52,6 +52,8 @@ class AppColors {
   // Old properties mapped for compatibility
   static const Color primaryFixed = Color(0xFFD5E3FF);
   static const Color secondaryFixed = Color(0xFFD7E2FF);
+  static const Color tertiaryFixed = Color(0xFFFFE16D);
+  static const Color onTertiaryFixed = Color(0xFF221B00);
 }
 
 class AppTheme {

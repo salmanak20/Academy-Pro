@@ -23,43 +23,57 @@ class AppSideNav extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      width: 280,
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.8),
+      width: 260,
+      decoration: const BoxDecoration(
+        color: AppColors.primary,
         border: Border(
           right: BorderSide(
-            color: AppColors.primary.withOpacity(0.05),
+            color: AppColors.outlineVariant,
           ),
         ),
       ),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            child: Row(
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
-                  ),
+                const Icon(
+                  Icons.local_police,
+                  color: AppColors.tertiaryFixed,
+                  size: 32,
                 ),
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.onSurfaceVariant,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          height: 1.2,
+                        ),
+                      ),
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.white.withOpacity(0.6),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
+          const Divider(color: Colors.white24, height: 1),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
               children: items.map((item) {
                 return _AnimatedNavItem(
                   icon: item.icon,
@@ -71,18 +85,27 @@ class AppSideNav extends ConsumerWidget {
               }).toList(),
             ),
           ),
-          Padding(
+          Container(
             padding: const EdgeInsets.all(16.0),
+            decoration: const BoxDecoration(
+              border: Border(
+                top: BorderSide(color: Colors.white24),
+              ),
+            ),
             child: Column(
               children: [
                 if (onSwitchRole != null)
-                  OutlinedButton(
+                  ElevatedButton.icon(
                     onPressed: onSwitchRole,
-                    style: OutlinedButton.styleFrom(
+                    icon: const Icon(Icons.swap_horiz, size: 20, color: AppColors.onSecondary),
+                    label: const Text('Switch Role', style: TextStyle(color: AppColors.onSecondary)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.secondary,
                       minimumSize: const Size(double.infinity, 44),
-                      side: const BorderSide(color: AppColors.primary),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
-                    child: const Text('Switch Role'),
                   ),
                 const SizedBox(height: 12),
                 _AnimatedNavItem(
@@ -127,30 +150,34 @@ class _AnimatedNavItemState extends State<_AnimatedNavItem> {
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 4),
+        margin: const EdgeInsets.only(bottom: 8),
         decoration: BoxDecoration(
-          color: widget.isActive ? AppColors.primaryContainer : Colors.transparent,
+          color: widget.isActive 
+              ? Colors.white.withOpacity(0.1) 
+              : (_isHovered ? Colors.white.withOpacity(0.05) : Colors.transparent),
           borderRadius: BorderRadius.circular(8),
           border: widget.isActive
               ? const Border(
-                  left: BorderSide(color: AppColors.secondary, width: 4),
+                  left: BorderSide(color: AppColors.tertiaryFixed, width: 4),
                 )
-              : null,
+              : const Border(
+                  left: BorderSide(color: Colors.transparent, width: 4),
+                ),
         ),
         child: ListTile(
           leading: AnimatedScale(
-            scale: _isHovered ? 1.2 : 1.0,
+            scale: _isHovered ? 1.1 : 1.0,
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeOutBack,
             child: Icon(
               widget.icon,
-              color: widget.isActive ? Colors.white : AppColors.onSurfaceVariant,
+              color: widget.isActive ? AppColors.tertiaryFixed : (_isHovered ? Colors.white : Colors.white.withOpacity(0.6)),
             ),
           ),
           title: Text(
             widget.label,
             style: TextStyle(
-              color: widget.isActive ? Colors.white : AppColors.onSurfaceVariant,
+              color: widget.isActive ? AppColors.tertiaryFixed : (_isHovered ? Colors.white : Colors.white.withOpacity(0.6)),
               fontWeight: widget.isActive ? FontWeight.bold : FontWeight.normal,
               fontSize: 14,
             ),
@@ -163,6 +190,7 @@ class _AnimatedNavItemState extends State<_AnimatedNavItem> {
             }
           },
           dense: true,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
