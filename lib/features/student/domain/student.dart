@@ -9,6 +9,7 @@ class Student {
   final String rollNumber;
   final String phone;
   final String address;
+  final double fee;
   final DateTime admissionDate;
 
   const Student({
@@ -20,6 +21,7 @@ class Student {
     required this.rollNumber,
     required this.phone,
     required this.address,
+    required this.fee,
     required this.admissionDate,
   });
 
@@ -30,6 +32,7 @@ class Student {
     String? rollNumber,
     String? phone,
     String? address,
+    double? fee,
   }) {
     return Student(
       id: id,
@@ -40,6 +43,7 @@ class Student {
       rollNumber: rollNumber ?? this.rollNumber,
       phone: phone ?? this.phone,
       address: address ?? this.address,
+      fee: fee ?? this.fee,
       admissionDate: admissionDate,
     );
   }
@@ -54,6 +58,7 @@ class Student {
       rollNumber: data['rollNumber'] ?? '',
       phone: data['phone'] ?? '',
       address: data['address'] ?? '',
+      fee: (data['fee'] ?? 0).toDouble(),
       admissionDate: (data['admissionDate'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
@@ -69,6 +74,7 @@ class Student {
       'rollNumber': rollNumber,
       'phone': phone,
       'address': address,
+      'fee': fee,
       'admissionDate': Timestamp.fromDate(admissionDate),
       'updatedAt': FieldValue.serverTimestamp(),
     };

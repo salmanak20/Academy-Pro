@@ -35,6 +35,11 @@ class ManageTeachersScreen extends ConsumerWidget {
           route: '/principal/teachers',
         ),
         NavItemData(
+          icon: Icons.payments,
+          label: 'Finance',
+          route: '/principal/finance',
+        ),
+        NavItemData(
           icon: Icons.event_available,
           label: 'Attendance',
           route: '/principal/attendance',
@@ -90,7 +95,7 @@ class ManageTeachersScreen extends ConsumerWidget {
                       style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurface),
                     ),
                     subtitle: Text(
-                      '${teacher.subject} | ${teacher.qualification}',
+                      '${teacher.subject} | ${teacher.qualification} | Rs. ${teacher.salary}',
                       style: const TextStyle(color: AppColors.onSurfaceVariant),
                     ),
                     trailing: Row(
@@ -167,7 +172,7 @@ class ManageTeachersScreen extends ConsumerWidget {
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: salaryController,
-                    decoration: const InputDecoration(labelText: 'Salary'),
+                    decoration: const InputDecoration(labelText: 'Salary (Rs.)'),
                     keyboardType: TextInputType.number,
                     validator: (v) => v!.isEmpty || double.tryParse(v) == null ? 'Invalid number' : null,
                   ),

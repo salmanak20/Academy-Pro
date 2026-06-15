@@ -36,6 +36,11 @@ class ReportsScreen extends ConsumerWidget {
           route: '/principal/attendance',
         ),
         NavItemData(
+          icon: Icons.payments,
+          label: 'Finance',
+          route: '/principal/finance',
+        ),
+        NavItemData(
           icon: Icons.bar_chart,
           label: 'Reports',
           route: '/principal/reports',

@@ -13,7 +13,7 @@ import '../../features/dashboard/presentation/admin_dashboard.dart';
 import '../../features/academy/presentation/manage_academies_screen.dart';
 import '../../features/student/presentation/manage_students_screen.dart';
 import '../../features/teacher/presentation/manage_teachers_screen.dart';
-import '../../screens/admin/fees_management_screen.dart';
+import '../../screens/admin/finance_management_screen.dart';
 import '../../screens/admin/mark_attendance_screen.dart';
 
 // Import Principal screens
@@ -100,8 +100,8 @@ GoRouter appRouter(Ref ref) {
         redirect: (context, state) => '/principal/teachers',
       ),
       GoRoute(
-        path: '/admin/fees',
-        redirect: (context, state) => '/principal/fees',
+        path: '/admin/finance',
+        redirect: (context, state) => '/principal/finance',
       ),
       GoRoute(
         path: '/admin/attendance',
@@ -128,8 +128,8 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) => const ManageTeachersScreen(),
       ),
       GoRoute(
-        path: '/principal/fees',
-        builder: (context, state) => const FeesManagementScreen(),
+        path: '/principal/finance',
+        builder: (context, state) => const FinanceManagementScreen(),
       ),
       GoRoute(
         path: '/principal/attendance',

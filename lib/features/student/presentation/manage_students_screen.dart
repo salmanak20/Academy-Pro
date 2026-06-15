@@ -175,6 +175,7 @@ class ManageStudentsScreen extends ConsumerWidget {
                               DataColumn(label: Text('Name', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurfaceVariant, fontSize: 12))),
                               DataColumn(label: Text('Class/Grade', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurfaceVariant, fontSize: 12))),
                               DataColumn(label: Text('Roll No.', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurfaceVariant, fontSize: 12))),
+                              DataColumn(label: Text('Fee (Rs.)', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurfaceVariant, fontSize: 12))),
                               DataColumn(label: Text('Status', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurfaceVariant, fontSize: 12))),
                               DataColumn(label: Text('Actions', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurfaceVariant, fontSize: 12))),
                             ],
@@ -213,6 +214,7 @@ class ManageStudentsScreen extends ConsumerWidget {
                                   ),
                                   DataCell(Text(student.studentClass, style: const TextStyle(color: AppColors.onSurface))),
                                   DataCell(Text(student.rollNumber, style: const TextStyle(color: AppColors.onSurfaceVariant))),
+                                  DataCell(Text('Rs. ${student.fee}', style: const TextStyle(color: AppColors.onSurfaceVariant))),
                                   DataCell(
                                     Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -361,6 +363,7 @@ class ManageStudentsScreen extends ConsumerWidget {
     final rollNumberController = TextEditingController(text: student?.rollNumber ?? '');
     final phoneController = TextEditingController(text: student?.phone ?? '');
     final addressController = TextEditingController(text: student?.address ?? '');
+    final feeController = TextEditingController(text: student?.fee.toString() ?? '');
     
     final formKey = GlobalKey<FormState>();
 
@@ -408,6 +411,13 @@ class ManageStudentsScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
+                    controller: feeController,
+                    decoration: const InputDecoration(labelText: 'Monthly Fee (Rs.)'),
+                    keyboardType: TextInputType.number,
+                    validator: (v) => v!.isEmpty || double.tryParse(v) == null ? 'Invalid number' : null,
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
                     controller: addressController,
                     decoration: const InputDecoration(labelText: 'Address'),
                   ),
@@ -424,6 +434,7 @@ class ManageStudentsScreen extends ConsumerWidget {
               style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
               onPressed: () async {
                 if (formKey.currentState!.validate()) {
+                  final fee = double.parse(feeController.text);
                   showDialog(
                     context: dialogContext,
                     barrierDismissible: false,
@@ -439,6 +450,7 @@ class ManageStudentsScreen extends ConsumerWidget {
                             rollNumber: rollNumberController.text,
                             phone: phoneController.text,
                             address: addressController.text,
+                            fee: fee,
                           );
                     } else {
                       await ref.read(studentControllerProvider.notifier).updateStudent(
@@ -449,6 +461,7 @@ class ManageStudentsScreen extends ConsumerWidget {
                               rollNumber: rollNumberController.text,
                               phone: phoneController.text,
                               address: addressController.text,
+                              fee: fee,
                             ),
                           );
                     }

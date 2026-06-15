@@ -49,7 +49,7 @@ class MarkAttendanceScreen extends ConsumerWidget {
         NavItemData(icon: Icons.dashboard, label: 'Dashboard', route: '/principal/dashboard'),
         NavItemData(icon: Icons.group, label: 'Students', route: '/principal/students'),
         NavItemData(icon: Icons.person, label: 'Teachers', route: '/principal/teachers'),
-        NavItemData(icon: Icons.payments, label: 'Fees', route: '/principal/fees'),
+        NavItemData(icon: Icons.payments, label: 'Finance', route: '/principal/finance'),
         NavItemData(icon: Icons.event_available, label: 'Attendance', route: '/principal/attendance'),
         NavItemData(icon: Icons.analytics, label: 'Reports'),
         NavItemData(icon: Icons.settings, label: 'Settings'),

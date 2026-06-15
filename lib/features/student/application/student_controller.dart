@@ -26,6 +26,7 @@ class StudentController extends _$StudentController {
     required String rollNumber,
     required String phone,
     required String address,
+    required double fee,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -43,6 +44,7 @@ class StudentController extends _$StudentController {
         rollNumber: rollNumber,
         phone: phone,
         address: address,
+        fee: fee,
         admissionDate: DateTime.now(),
       );
       
