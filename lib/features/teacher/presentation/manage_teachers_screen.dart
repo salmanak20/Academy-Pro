@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../application/teacher_controller.dart';
 import '../domain/teacher.dart';
+import '../../../theme.dart';
+import '../../../widgets/app_side_nav.dart';
+import '../../../widgets/dashboard_shell.dart';
 
 class ManageTeachersScreen extends ConsumerWidget {
   const ManageTeachersScreen({super.key});
@@ -10,52 +13,109 @@ class ManageTeachersScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final teachersAsync = ref.watch(teachersStreamProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Manage Teachers'),
-      ),
-      body: teachersAsync.when(
-        data: (teachers) {
-          if (teachers.isEmpty) {
-            return const Center(child: Text('No teachers added yet.'));
-          }
-          return ListView.builder(
-            itemCount: teachers.length,
-            itemBuilder: (context, index) {
-              final teacher = teachers[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.purple.shade100,
-                    child: Text(teacher.name.substring(0, 1).toUpperCase()),
+    return DashboardShell(
+      title: 'Manage Teachers',
+      activeTab: 'Teachers',
+      sidebarTitle: 'Academy Pro',
+      sidebarSubtitle: 'Principal',
+      navItems: [
+        NavItemData(
+          icon: Icons.dashboard,
+          label: 'Dashboard',
+          route: '/principal/dashboard',
+        ),
+        NavItemData(
+          icon: Icons.school,
+          label: 'Students',
+          route: '/principal/students',
+        ),
+        NavItemData(
+          icon: Icons.person_4,
+          label: 'Teachers',
+          route: '/principal/teachers',
+        ),
+        NavItemData(
+          icon: Icons.event_available,
+          label: 'Attendance',
+          route: '/principal/attendance',
+        ),
+        NavItemData(
+          icon: Icons.bar_chart,
+          label: 'Reports',
+          route: '/principal/reports',
+        ),
+      ],
+      actions: [
+        ElevatedButton.icon(
+          onPressed: () => _showTeacherDialog(context, ref),
+          icon: const Icon(Icons.add, size: 20),
+          label: const Text('Add Teacher'),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            elevation: 2,
+          ),
+        ),
+      ],
+      body: Container(
+        color: AppColors.background,
+        child: teachersAsync.when(
+          data: (teachers) {
+            if (teachers.isEmpty) {
+              return const Center(child: Text('No teachers added yet.'));
+            }
+            return ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: teachers.length,
+              itemBuilder: (context, index) {
+                final teacher = teachers[index];
+                return Card(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: AppColors.outlineVariant.withOpacity(0.5)),
                   ),
-                  title: Text('${teacher.id} - ${teacher.name}'),
-                  subtitle: Text('${teacher.subject} | ${teacher.qualification}'),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () => _showTeacherDialog(context, ref, teacher: teacher),
+                  elevation: 0,
+                  color: Colors.white,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    leading: CircleAvatar(
+                      backgroundColor: AppColors.primaryContainer,
+                      child: Text(
+                        teacher.name.isNotEmpty ? teacher.name.substring(0, 1).toUpperCase() : '?',
+                        style: const TextStyle(color: AppColors.onPrimaryContainer, fontWeight: FontWeight.bold),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () => _confirmDelete(context, ref, teacher),
-                      ),
-                    ],
+                    ),
+                    title: Text(
+                      teacher.name,
+                      style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurface),
+                    ),
+                    subtitle: Text(
+                      '${teacher.subject} | ${teacher.qualification}',
+                      style: const TextStyle(color: AppColors.onSurfaceVariant),
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.edit, color: AppColors.primary, size: 20),
+                          onPressed: () => _showTeacherDialog(context, ref, teacher: teacher),
+                          tooltip: 'Edit',
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: AppColors.error, size: 20),
+                          onPressed: () => _confirmDelete(context, ref, teacher),
+                          tooltip: 'Delete',
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, st) => Center(child: Text('Error: $e')),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showTeacherDialog(context, ref),
-        child: const Icon(Icons.add),
+                );
+              },
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (e, st) => Center(child: Text('Error: $e')),
+        ),
       ),
     );
   }
@@ -73,7 +133,9 @@ class ManageTeachersScreen extends ConsumerWidget {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: Text(teacher == null ? 'Add Teacher' : 'Edit Teacher'),
+          backgroundColor: AppColors.surface,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          title: Text(teacher == null ? 'Add Teacher' : 'Edit Teacher', style: const TextStyle(color: AppColors.primary)),
           content: Form(
             key: formKey,
             child: SingleChildScrollView(
@@ -85,20 +147,24 @@ class ManageTeachersScreen extends ConsumerWidget {
                     decoration: const InputDecoration(labelText: 'Teacher Name'),
                     validator: (v) => v!.isEmpty ? 'Required' : null,
                   ),
+                  const SizedBox(height: 12),
                   TextFormField(
                     controller: subjectController,
                     decoration: const InputDecoration(labelText: 'Subject'),
                     validator: (v) => v!.isEmpty ? 'Required' : null,
                   ),
+                  const SizedBox(height: 12),
                   TextFormField(
                     controller: qualificationController,
                     decoration: const InputDecoration(labelText: 'Qualification'),
                   ),
+                  const SizedBox(height: 12),
                   TextFormField(
                     controller: phoneController,
                     decoration: const InputDecoration(labelText: 'Phone'),
                     validator: (v) => v!.isEmpty ? 'Required' : null,
                   ),
+                  const SizedBox(height: 12),
                   TextFormField(
                     controller: salaryController,
                     decoration: const InputDecoration(labelText: 'Salary'),
@@ -112,9 +178,10 @@ class ManageTeachersScreen extends ConsumerWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
-              child: const Text('Cancel'),
+              child: const Text('Cancel', style: TextStyle(color: AppColors.outline)),
             ),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
               onPressed: () async {
                 if (formKey.currentState!.validate()) {
                   final salary = double.parse(salaryController.text);
@@ -174,16 +241,17 @@ class ManageTeachersScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         title: const Text('Delete Teacher'),
         content: Text('Are you sure you want to delete ${teacher.name}?'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel', style: TextStyle(color: AppColors.outline))),
           TextButton(
             onPressed: () {
               ref.read(teacherControllerProvider.notifier).deleteTeacher(teacher.id);
               Navigator.pop(ctx);
             },
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+            child: const Text('Delete', style: TextStyle(color: AppColors.error)),
           ),
         ],
       ),

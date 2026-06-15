@@ -19,6 +19,7 @@ import '../../screens/admin/mark_attendance_screen.dart';
 // Import Principal screens
 import '../../screens/principal/principal_dashboard.dart';
 import '../../features/dashboard/presentation/change_password_screen.dart';
+import '../../screens/principal/reports_screen.dart';
 
 part 'app_router.g.dart';
 
@@ -140,10 +141,7 @@ GoRouter appRouter(Ref ref) {
       ),
       GoRoute(
         path: '/principal/reports',
-        builder: (context, state) => Scaffold(
-          appBar: AppBar(title: const Text('Reports')),
-          body: const Center(child: Text('Reports Coming Soon')),
-        ),
+        builder: (context, state) => const ReportsScreen(),
       ),
     ],
   );
