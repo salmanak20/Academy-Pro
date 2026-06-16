@@ -38,6 +38,7 @@ class StudentRepository {
       rollNumber: student.rollNumber,
       phone: student.phone,
       address: student.address,
+      fee: student.fee,
       admissionDate: student.admissionDate,
     );
     await _students.doc(id).set(newStudent.toMap());
