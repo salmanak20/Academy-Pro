@@ -4,6 +4,7 @@ import 'core/theme/app_theme.dart';
 import 'core/routing/app_router.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -25,6 +26,7 @@ final firebaseInitializerProvider = FutureProvider<void>((ref) async {
     ).timeout(const Duration(seconds: 15));
 
     if (kIsWeb) {
+      await FirebaseAuth.instance.setPersistence(Persistence.SESSION);
       FirebaseFirestore.instance.settings = const Settings(
         persistenceEnabled: false,
         sslEnabled: true,
