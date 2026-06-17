@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme.dart';
 import 'app_side_nav.dart';
+import '../features/auth/presentation/providers/auth_provider.dart';
 
 class DashboardShell extends StatelessWidget {
   final String title;
@@ -144,18 +146,46 @@ class _SearchBar extends StatelessWidget {
   }
 }
 
-class _HeaderIcons extends StatelessWidget {
+class _HeaderIcons extends ConsumerWidget {
   const _HeaderIcons();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       children: [
         IconButton(
           icon: const Icon(Icons.history_edu, color: AppColors.primary),
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Viewing recent activity...')),
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Recent Activity'),
+                content: const Text('No recent activity available.'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Close'),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+        IconButton(
+          icon: const Icon(Icons.settings, color: AppColors.primary),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Settings'),
+                content: const Text('Settings module coming soon.'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Close'),
+                  ),
+                ],
+              ),
             );
           },
         ),
@@ -164,15 +194,32 @@ class _HeaderIcons extends StatelessWidget {
   }
 }
 
-class _UserProfile extends StatelessWidget {
+class _UserProfile extends ConsumerWidget {
   const _UserProfile();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
       onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Opening user profile...')),
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('User Profile'),
+            content: const Text('Manage your account here.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  ref.read(authControllerProvider.notifier).logout();
+                },
+                child: const Text('Logout', style: TextStyle(color: AppColors.error)),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Close'),
+              ),
+            ],
+          ),
         );
       },
       child: const Icon(

@@ -13,7 +13,7 @@ class AuthRepository {
   Stream<User?> authStateChanges() => _auth.idTokenChanges();
 
   Future<AppUser?> getCurrentUser() async {
-    final user = _auth.currentUser;
+    final user = await _auth.authStateChanges().first;
     if (user == null) return null;
     return fetchUserData(user.uid);
   }

@@ -303,8 +303,8 @@ class ManageStudentsScreen extends ConsumerWidget {
               child: _StatCard(
                 title: 'Total Students',
                 value: students.length.toString(),
-                trend: '+12',
-                trendIcon: Icons.trending_up,
+                trend: '',
+                trendIcon: Icons.trending_flat,
                 trendColor: const Color(0xFF10B981),
                 bgDecoration: const Color(0xFF115CB9).withOpacity(0.05), // Secondary
               ),
@@ -313,7 +313,7 @@ class ManageStudentsScreen extends ConsumerWidget {
             Expanded(
               child: _StatCard(
                 title: 'New Enrollments',
-                value: '45',
+                value: '0',
                 bgDecoration: const Color(0xFFFFE16D).withOpacity(0.2), // Tertiary
               ),
             ),
@@ -321,11 +321,11 @@ class ManageStudentsScreen extends ConsumerWidget {
             Expanded(
               child: _StatCard(
                 title: 'Action Required',
-                value: '3',
-                trend: 'Pending Docs',
+                value: '0',
+                trend: 'None',
                 trendColor: AppColors.onSurfaceVariant,
-                valueColor: AppColors.error,
-                bgDecoration: AppColors.error.withOpacity(0.05),
+                valueColor: AppColors.primary,
+                bgDecoration: AppColors.primary.withOpacity(0.05),
               ),
             ),
           ],

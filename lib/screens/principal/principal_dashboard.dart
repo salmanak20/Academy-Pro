@@ -243,26 +243,7 @@ class PrincipalDashboard extends ConsumerWidget {
   }
 
   Widget _buildBottomSection(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth >= 1200) {
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(child: _buildAttendanceBreakdown()),
-            const SizedBox(width: 24),
-            Expanded(child: _buildDepartmentLeads(context)),
-          ],
-        );
-      } else {
-        return Column(
-          children: [
-            _buildAttendanceBreakdown(),
-            const SizedBox(height: 24),
-            _buildDepartmentLeads(context),
-          ],
-        );
-      }
-    });
+    return const SizedBox.shrink(); // Demo attendance and faculty sections removed
   }
 
   Widget _buildAttendanceBreakdown() {
