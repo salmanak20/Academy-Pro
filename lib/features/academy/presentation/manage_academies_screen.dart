@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../application/academy_controller.dart';
 import '../domain/academy.dart';
+import '../../../widgets/app_side_nav.dart';
+import '../../../widgets/dashboard_shell.dart';
 
 class ManageAcademiesScreen extends ConsumerWidget {
   const ManageAcademiesScreen({super.key});
@@ -10,10 +12,35 @@ class ManageAcademiesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final academiesAsync = ref.watch(academiesStreamProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Manage Academies'),
-      ),
+    return DashboardShell(
+      title: 'Manage Academies',
+      activeTab: 'Academies',
+      sidebarTitle: 'Academy Pro',
+      sidebarSubtitle: 'Super Admin',
+      navItems: [
+        NavItemData(
+          icon: Icons.dashboard,
+          label: 'Dashboard',
+          route: '/admin/dashboard',
+        ),
+        NavItemData(
+          icon: Icons.school,
+          label: 'Academies',
+          route: '/admin/academies',
+        ),
+        NavItemData(
+          icon: Icons.settings,
+          label: 'Settings',
+          route: '/admin/settings', // Add route if it exists, otherwise keep as is
+        ),
+      ],
+      actions: [
+        ElevatedButton.icon(
+          onPressed: () => _showAcademyDialog(context, ref),
+          icon: const Icon(Icons.add, size: 20),
+          label: const Text('Add Academy'),
+        ),
+      ],
       body: academiesAsync.when(
         data: (academies) {
           if (academies.isEmpty) {
@@ -64,10 +91,6 @@ class ManageAcademiesScreen extends ConsumerWidget {
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, st) => Center(child: Text('Error: $e')),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAcademyDialog(context, ref),
-        child: const Icon(Icons.add),
       ),
     );
   }
