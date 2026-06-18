@@ -20,6 +20,8 @@ import '../../screens/admin/mark_attendance_screen.dart';
 import '../../screens/principal/principal_dashboard.dart';
 import '../../features/dashboard/presentation/change_password_screen.dart';
 import '../../screens/principal/reports_screen.dart';
+import '../../features/settings/presentation/settings_screen.dart';
+import '../../features/profile/presentation/profile_screen.dart';
 
 part 'app_router.g.dart';
 
