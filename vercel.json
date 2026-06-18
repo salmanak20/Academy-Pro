@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "github": {
+    "enabled": false
+  },
   "buildCommand": "flutter build web --release --dart-define=PRODUCTION=true --dart-define=APP_URL=https://academypro-five.vercel.app --dart-define=SUPPORT_EMAIL=salmanyousafzai312@gmail.com",
   "outputDirectory": "build/web",
   "rewrites": [
