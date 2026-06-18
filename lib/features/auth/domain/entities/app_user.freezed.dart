@@ -17,7 +17,7 @@ mixin _$AppUser {
 
  String get uid; String get email; String get role;// 'SuperAdmin', 'Principal', 'Teacher', 'Student'
  String? get academyId;// Null for SuperAdmin, required for Principal/Teacher/Student
- String? get name;
+ String? get name; String? get photoUrl;
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,16 +30,16 @@ $AppUserCopyWith<AppUser> get copyWith => _$AppUserCopyWithImpl<AppUser>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppUser&&(identical(other.uid, uid) || other.uid == uid)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.academyId, academyId) || other.academyId == academyId)&&(identical(other.name, name) || other.name == name));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppUser&&(identical(other.uid, uid) || other.uid == uid)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.academyId, academyId) || other.academyId == academyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.photoUrl, photoUrl) || other.photoUrl == photoUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,uid,email,role,academyId,name);
+int get hashCode => Object.hash(runtimeType,uid,email,role,academyId,name,photoUrl);
 
 @override
 String toString() {
-  return 'AppUser(uid: $uid, email: $email, role: $role, academyId: $academyId, name: $name)';
+  return 'AppUser(uid: $uid, email: $email, role: $role, academyId: $academyId, name: $name, photoUrl: $photoUrl)';
 }
 
 
@@ -50,7 +50,7 @@ abstract mixin class $AppUserCopyWith<$Res>  {
   factory $AppUserCopyWith(AppUser value, $Res Function(AppUser) _then) = _$AppUserCopyWithImpl;
 @useResult
 $Res call({
- String uid, String email, String role, String? academyId, String? name
+ String uid, String email, String role, String? academyId, String? name, String? photoUrl
 });
 
 
@@ -67,13 +67,14 @@ class _$AppUserCopyWithImpl<$Res>
 
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? uid = null,Object? email = null,Object? role = null,Object? academyId = freezed,Object? name = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? uid = null,Object? email = null,Object? role = null,Object? academyId = freezed,Object? name = freezed,Object? photoUrl = freezed,}) {
   return _then(_self.copyWith(
 uid: null == uid ? _self.uid : uid // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as String,academyId: freezed == academyId ? _self.academyId : academyId // ignore: cast_nullable_to_non_nullable
 as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -159,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String uid,  String email,  String role,  String? academyId,  String? name)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String uid,  String email,  String role,  String? academyId,  String? name,  String? photoUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppUser() when $default != null:
-return $default(_that.uid,_that.email,_that.role,_that.academyId,_that.name);case _:
+return $default(_that.uid,_that.email,_that.role,_that.academyId,_that.name,_that.photoUrl);case _:
   return orElse();
 
 }
@@ -180,10 +181,10 @@ return $default(_that.uid,_that.email,_that.role,_that.academyId,_that.name);cas
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String uid,  String email,  String role,  String? academyId,  String? name)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String uid,  String email,  String role,  String? academyId,  String? name,  String? photoUrl)  $default,) {final _that = this;
 switch (_that) {
 case _AppUser():
-return $default(_that.uid,_that.email,_that.role,_that.academyId,_that.name);case _:
+return $default(_that.uid,_that.email,_that.role,_that.academyId,_that.name,_that.photoUrl);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +201,10 @@ return $default(_that.uid,_that.email,_that.role,_that.academyId,_that.name);cas
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String uid,  String email,  String role,  String? academyId,  String? name)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String uid,  String email,  String role,  String? academyId,  String? name,  String? photoUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _AppUser() when $default != null:
-return $default(_that.uid,_that.email,_that.role,_that.academyId,_that.name);case _:
+return $default(_that.uid,_that.email,_that.role,_that.academyId,_that.name,_that.photoUrl);case _:
   return null;
 
 }
@@ -215,7 +216,7 @@ return $default(_that.uid,_that.email,_that.role,_that.academyId,_that.name);cas
 @JsonSerializable()
 
 class _AppUser extends AppUser {
-  const _AppUser({required this.uid, required this.email, required this.role, this.academyId, this.name}): super._();
+  const _AppUser({required this.uid, required this.email, required this.role, this.academyId, this.name, this.photoUrl}): super._();
   factory _AppUser.fromJson(Map<String, dynamic> json) => _$AppUserFromJson(json);
 
 @override final  String uid;
@@ -225,6 +226,7 @@ class _AppUser extends AppUser {
 @override final  String? academyId;
 // Null for SuperAdmin, required for Principal/Teacher/Student
 @override final  String? name;
+@override final  String? photoUrl;
 
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
@@ -239,16 +241,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppUser&&(identical(other.uid, uid) || other.uid == uid)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.academyId, academyId) || other.academyId == academyId)&&(identical(other.name, name) || other.name == name));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppUser&&(identical(other.uid, uid) || other.uid == uid)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.academyId, academyId) || other.academyId == academyId)&&(identical(other.name, name) || other.name == name)&&(identical(other.photoUrl, photoUrl) || other.photoUrl == photoUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,uid,email,role,academyId,name);
+int get hashCode => Object.hash(runtimeType,uid,email,role,academyId,name,photoUrl);
 
 @override
 String toString() {
-  return 'AppUser(uid: $uid, email: $email, role: $role, academyId: $academyId, name: $name)';
+  return 'AppUser(uid: $uid, email: $email, role: $role, academyId: $academyId, name: $name, photoUrl: $photoUrl)';
 }
 
 
@@ -259,7 +261,7 @@ abstract mixin class _$AppUserCopyWith<$Res> implements $AppUserCopyWith<$Res> {
   factory _$AppUserCopyWith(_AppUser value, $Res Function(_AppUser) _then) = __$AppUserCopyWithImpl;
 @override @useResult
 $Res call({
- String uid, String email, String role, String? academyId, String? name
+ String uid, String email, String role, String? academyId, String? name, String? photoUrl
 });
 
 
@@ -276,13 +278,14 @@ class __$AppUserCopyWithImpl<$Res>
 
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? uid = null,Object? email = null,Object? role = null,Object? academyId = freezed,Object? name = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? uid = null,Object? email = null,Object? role = null,Object? academyId = freezed,Object? name = freezed,Object? photoUrl = freezed,}) {
   return _then(_AppUser(
 uid: null == uid ? _self.uid : uid // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as String,academyId: freezed == academyId ? _self.academyId : academyId // ignore: cast_nullable_to_non_nullable
 as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

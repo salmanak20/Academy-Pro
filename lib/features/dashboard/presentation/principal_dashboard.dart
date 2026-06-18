@@ -81,11 +81,11 @@ class PrincipalDashboard extends ConsumerWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.security),
-            title: const Text('Change Password'),
+            leading: const Icon(Icons.settings),
+            title: const Text('Settings'),
             onTap: () {
               context.pop();
-              context.push('/principal/change-password');
+              context.push('/principal/settings');
             },
           ),
         ],

@@ -13,6 +13,7 @@ abstract class AppUser with _$AppUser {
     required String role, // 'SuperAdmin', 'Principal', 'Teacher', 'Student'
     String? academyId, // Null for SuperAdmin, required for Principal/Teacher/Student
     String? name,
+    String? photoUrl,
   }) = _AppUser;
 
   factory AppUser.fromJson(Map<String, dynamic> json) =>

@@ -119,10 +119,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with TickerProvider
                           ),
                         ],
                       ),
-                      child: Image.asset(
-                        'assets/logo.png',
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) => const Icon(Icons.school, size: 100, color: Colors.white),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(32),
+                        child: Image.asset(
+                          'assets/logo.png',
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) => const Icon(Icons.school, size: 100, color: Colors.white),
+                        ),
                       ),
                     ),
                   ),

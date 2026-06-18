@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
@@ -46,6 +47,19 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
       // Update password
       await user.updatePassword(_newPasswordController.text);
+
+      // Send mail
+      await FirebaseFirestore.instance.collection('mail').add({
+        'to': user.email,
+        'message': {
+          'subject': 'Password Changed - Academy Pro',
+          'html': '''
+            <h2>Password Changed Successfully</h2>
+            <p>Your password for Academy Pro has been recently changed.</p>
+            <p>If you did not make this change, please contact support immediately.</p>
+          ''',
+        }
+      });
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

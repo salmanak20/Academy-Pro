@@ -143,6 +143,14 @@ GoRouter appRouter(Ref ref) {
         path: '/principal/reports',
         builder: (context, state) => const ReportsScreen(),
       ),
+      GoRoute(
+        path: '/principal/settings',
+        builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: '/principal/profile',
+        builder: (context, state) => const ProfileScreen(),
+      ),
     ],
   );
 }

@@ -174,19 +174,12 @@ class _HeaderIcons extends ConsumerWidget {
         IconButton(
           icon: const Icon(Icons.settings, color: AppColors.primary),
           onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Settings'),
-                content: const Text('Settings module coming soon.'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Close'),
-                  ),
-                ],
-              ),
-            );
+            final role = ref.read(authControllerProvider).value?.role;
+            if (role?.toLowerCase() == 'superadmin' || role?.toLowerCase() == 'admin') {
+              context.push('/admin/settings');
+            } else {
+              context.push('/principal/settings');
+            }
           },
         ),
       ],
@@ -199,6 +192,7 @@ class _UserProfile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authControllerProvider).value;
     return InkWell(
       onTap: () {
         showDialog(
@@ -207,6 +201,16 @@ class _UserProfile extends ConsumerWidget {
             title: const Text('User Profile'),
             content: const Text('Manage your account here.'),
             actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  final role = ref.read(authControllerProvider).value?.role;
+                  if (role?.toLowerCase() != 'superadmin' && role?.toLowerCase() != 'admin') {
+                    context.push('/principal/profile');
+                  }
+                },
+                child: const Text('Profile'),
+              ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -222,10 +226,15 @@ class _UserProfile extends ConsumerWidget {
           ),
         );
       },
-      child: const Icon(
-        Icons.account_circle,
-        size: 40,
-        color: AppColors.primary,
+      child: CircleAvatar(
+        radius: 20,
+        backgroundColor: AppColors.surfaceContainerHigh,
+        backgroundImage: user?.photoUrl != null ? NetworkImage(user!.photoUrl!) : null,
+        child: user?.photoUrl == null ? const Icon(
+          Icons.account_circle,
+          size: 40,
+          color: AppColors.primary,
+        ) : null,
       ),
     );
   }
