@@ -8,6 +8,7 @@ import '../../academy/domain/academy.dart';
 import '../../../theme.dart';
 import '../../../widgets/app_side_nav.dart';
 import '../../../widgets/dashboard_shell.dart';
+import '../../../core/constants/nav_items.dart';
 
 class AdminDashboard extends ConsumerWidget {
   const AdminDashboard({super.key});
@@ -22,19 +23,7 @@ class AdminDashboard extends ConsumerWidget {
       activeTab: 'Dashboard',
       sidebarTitle: 'Academy Pro',
       sidebarSubtitle: 'Super Admin',
-      navItems: [
-        NavItemData(
-          icon: Icons.dashboard,
-          label: 'Dashboard',
-          route: '/admin/dashboard',
-        ),
-        NavItemData(
-          icon: Icons.school,
-          label: 'Academies',
-          route: '/admin/academies',
-        ),
-
-      ],
+      navItems: adminNavItems,
       body: Container(
         color: AppColors.background,
         child: SingleChildScrollView(

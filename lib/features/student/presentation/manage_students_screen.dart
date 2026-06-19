@@ -5,6 +5,7 @@ import '../domain/student.dart';
 import '../../../theme.dart';
 import '../../../widgets/app_side_nav.dart';
 import '../../../widgets/dashboard_shell.dart';
+import '../../../core/constants/nav_items.dart';
 
 class ManageStudentsScreen extends ConsumerWidget {
   const ManageStudentsScreen({super.key});
@@ -18,33 +19,7 @@ class ManageStudentsScreen extends ConsumerWidget {
       activeTab: 'Students',
       sidebarTitle: 'Academy Pro',
       sidebarSubtitle: 'Principal',
-      navItems: [
-        NavItemData(
-          icon: Icons.dashboard,
-          label: 'Dashboard',
-          route: '/principal/dashboard', // Adjust routes as needed
-        ),
-        NavItemData(
-          icon: Icons.school,
-          label: 'Students',
-          route: '/principal/students',
-        ),
-        NavItemData(
-          icon: Icons.person_4,
-          label: 'Teachers',
-          route: '/principal/teachers',
-        ),
-        NavItemData(
-          icon: Icons.event_available,
-          label: 'Attendance',
-          route: '/principal/attendance',
-        ),
-        NavItemData(
-          icon: Icons.bar_chart,
-          label: 'Reports',
-          route: '/principal/reports',
-        ),
-      ],
+      navItems: principalNavItems,
       body: Container(
         color: AppColors.background,
         child: SingleChildScrollView(

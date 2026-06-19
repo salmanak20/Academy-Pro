@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../theme.dart';
 import '../../widgets/dashboard_shell.dart';
 import '../../widgets/app_side_nav.dart';
+import '../../core/constants/nav_items.dart';
 
 class FinanceManagementScreen extends StatelessWidget {
   const FinanceManagementScreen({super.key});
@@ -11,15 +12,7 @@ class FinanceManagementScreen extends StatelessWidget {
     return DashboardShell(
       title: 'Finance Module',
       activeTab: 'Finance',
-      navItems: const [
-        NavItemData(icon: Icons.dashboard, label: 'Dashboard', route: '/principal/dashboard'),
-        NavItemData(icon: Icons.group, label: 'Students', route: '/principal/students'),
-        NavItemData(icon: Icons.person, label: 'Teachers', route: '/principal/teachers'),
-        NavItemData(icon: Icons.payments, label: 'Finance', route: '/principal/finance'),
-        NavItemData(icon: Icons.event_available, label: 'Attendance', route: '/principal/attendance'),
-        NavItemData(icon: Icons.analytics, label: 'Reports', route: '/principal/reports'),
-
-      ],
+      navItems: principalNavItems,
       actions: [
         ElevatedButton.icon(
           onPressed: () {

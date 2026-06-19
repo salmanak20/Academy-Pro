@@ -5,6 +5,7 @@ import '../domain/teacher.dart';
 import '../../../theme.dart';
 import '../../../widgets/app_side_nav.dart';
 import '../../../widgets/dashboard_shell.dart';
+import '../../../core/constants/nav_items.dart';
 
 class ManageTeachersScreen extends ConsumerWidget {
   const ManageTeachersScreen({super.key});
@@ -18,38 +19,7 @@ class ManageTeachersScreen extends ConsumerWidget {
       activeTab: 'Teachers',
       sidebarTitle: 'Academy Pro',
       sidebarSubtitle: 'Principal',
-      navItems: [
-        NavItemData(
-          icon: Icons.dashboard,
-          label: 'Dashboard',
-          route: '/principal/dashboard',
-        ),
-        NavItemData(
-          icon: Icons.school,
-          label: 'Students',
-          route: '/principal/students',
-        ),
-        NavItemData(
-          icon: Icons.person_4,
-          label: 'Teachers',
-          route: '/principal/teachers',
-        ),
-        NavItemData(
-          icon: Icons.payments,
-          label: 'Finance',
-          route: '/principal/finance',
-        ),
-        NavItemData(
-          icon: Icons.event_available,
-          label: 'Attendance',
-          route: '/principal/attendance',
-        ),
-        NavItemData(
-          icon: Icons.bar_chart,
-          label: 'Reports',
-          route: '/principal/reports',
-        ),
-      ],
+      navItems: principalNavItems,
       actions: [
         ElevatedButton.icon(
           onPressed: () => _showTeacherDialog(context, ref),

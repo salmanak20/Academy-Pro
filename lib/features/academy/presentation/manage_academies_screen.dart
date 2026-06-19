@@ -4,6 +4,7 @@ import '../application/academy_controller.dart';
 import '../domain/academy.dart';
 import '../../../widgets/app_side_nav.dart';
 import '../../../widgets/dashboard_shell.dart';
+import '../../../core/constants/nav_items.dart';
 
 class ManageAcademiesScreen extends ConsumerWidget {
   const ManageAcademiesScreen({super.key});
@@ -17,19 +18,7 @@ class ManageAcademiesScreen extends ConsumerWidget {
       activeTab: 'Academies',
       sidebarTitle: 'Academy Pro',
       sidebarSubtitle: 'Super Admin',
-      navItems: [
-        NavItemData(
-          icon: Icons.dashboard,
-          label: 'Dashboard',
-          route: '/admin/dashboard',
-        ),
-        NavItemData(
-          icon: Icons.school,
-          label: 'Academies',
-          route: '/admin/academies',
-        ),
-
-      ],
+      navItems: adminNavItems,
       actions: [
         ElevatedButton.icon(
           onPressed: () => _showAcademyDialog(context, ref),

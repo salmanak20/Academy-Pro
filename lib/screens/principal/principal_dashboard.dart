@@ -6,6 +6,7 @@ import '../../widgets/dashboard_shell.dart';
 import '../../widgets/app_side_nav.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
 import '../../features/academy/application/academy_controller.dart';
+import '../../core/constants/nav_items.dart';
 
 class PrincipalDashboard extends ConsumerWidget {
   const PrincipalDashboard({super.key});
@@ -17,15 +18,7 @@ class PrincipalDashboard extends ConsumerWidget {
       sidebarTitle: 'Academy Pro',
       sidebarSubtitle: 'Elite Management',
       activeTab: 'Dashboard',
-      navItems: const [
-        NavItemData(icon: Icons.dashboard, label: 'Dashboard', route: '/principal/dashboard'),
-        NavItemData(icon: Icons.group, label: 'Students', route: '/principal/students'),
-        NavItemData(icon: Icons.person, label: 'Teachers', route: '/principal/teachers'),
-        NavItemData(icon: Icons.payments, label: 'Finance', route: '/principal/finance'),
-        NavItemData(icon: Icons.event_available, label: 'Attendance', route: '/principal/attendance'),
-        NavItemData(icon: Icons.analytics, label: 'Reports', route: '/principal/reports'),
-
-      ],
+      navItems: principalNavItems,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(

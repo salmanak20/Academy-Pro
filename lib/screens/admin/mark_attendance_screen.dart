@@ -11,6 +11,7 @@ import '../../features/teacher/application/teacher_controller.dart';
 import '../../theme.dart';
 import '../../widgets/app_side_nav.dart';
 import '../../widgets/dashboard_shell.dart';
+import '../../core/constants/nav_items.dart';
 
 class MarkAttendanceScreen extends ConsumerWidget {
   const MarkAttendanceScreen({super.key});
@@ -45,15 +46,7 @@ class MarkAttendanceScreen extends ConsumerWidget {
     return DashboardShell(
       title: 'Attendance',
       activeTab: 'Attendance',
-      navItems: const [
-        NavItemData(icon: Icons.dashboard, label: 'Dashboard', route: '/principal/dashboard'),
-        NavItemData(icon: Icons.group, label: 'Students', route: '/principal/students'),
-        NavItemData(icon: Icons.person, label: 'Teachers', route: '/principal/teachers'),
-        NavItemData(icon: Icons.payments, label: 'Finance', route: '/principal/finance'),
-        NavItemData(icon: Icons.event_available, label: 'Attendance', route: '/principal/attendance'),
-        NavItemData(icon: Icons.analytics, label: 'Reports', route: '/principal/reports'),
-
-      ],
+      navItems: principalNavItems,
       actions: [
         OutlinedButton.icon(
           onPressed: () => _exportAttendance(context, peopleAsync, attendanceAsync, state),
