@@ -37,7 +37,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (!mounted) return;
       AppSnackBar.showError(
         context,
-        'Sign-in failed',
+        'Authentication Failed',
         detail: e.toString().replaceFirst('Exception: ', ''),
       );
     }
@@ -207,8 +207,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   ),
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (value) {
-                                    if (value == null || value.isEmpty || !value.contains('@')) {
-                                      return 'Please enter a valid email';
+                                    if (value == null || value.isEmpty) {
+                                      return 'Email cannot be empty';
+                                    }
+                                    if (!value.contains('@')) {
+                                      return 'Please enter a valid email address';
                                     }
                                     return null;
                                   },
@@ -266,8 +269,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     ),
                                   ),
                                   validator: (value) {
-                                    if (value == null || value.isEmpty || value.length < 6) {
-                                      return 'Please enter a valid password';
+                                    if (value == null || value.isEmpty) {
+                                      return 'Password cannot be empty';
+                                    }
+                                    if (value.length < 6) {
+                                      return 'Password must be at least 6 characters';
                                     }
                                     return null;
                                   },
