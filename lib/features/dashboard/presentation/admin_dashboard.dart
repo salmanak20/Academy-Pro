@@ -9,6 +9,7 @@ import '../../../theme.dart';
 import '../../../widgets/app_side_nav.dart';
 import '../../../widgets/dashboard_shell.dart';
 import '../../../core/constants/nav_items.dart';
+import '../../../core/widgets/app_error_widget.dart';
 
 class AdminDashboard extends ConsumerWidget {
   const AdminDashboard({super.key});
@@ -116,9 +117,7 @@ class AdminDashboard extends ConsumerWidget {
                 ),
                 error: (e, st) => SizedBox(
                   height: 140,
-                  child: Center(
-                    child: Text('Error loading stats: $e', style: const TextStyle(color: AppColors.error)),
-                  ),
+                  child: AppErrorWidget(error: e, compact: true),
                 ),
               ),
               const SizedBox(height: 24),
@@ -319,8 +318,8 @@ class AdminDashboard extends ConsumerWidget {
                         child: Center(child: CircularProgressIndicator()),
                       ),
                       error: (e, st) => Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Center(child: Text('Error loading academies: $e', style: const TextStyle(color: AppColors.error))),
+                        padding: const EdgeInsets.all(16.0),
+                        child: AppErrorWidget(error: e, compact: true),
                       ),
                     ),
                     const Divider(height: 1, color: AppColors.outlineVariant),

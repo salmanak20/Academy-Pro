@@ -3,6 +3,7 @@ import '../../theme.dart';
 import '../../widgets/dashboard_shell.dart';
 import '../../widgets/app_side_nav.dart';
 import '../../core/constants/nav_items.dart';
+import '../../core/utils/app_snack_bar.dart';
 
 class FinanceManagementScreen extends StatelessWidget {
   const FinanceManagementScreen({super.key});
@@ -16,9 +17,7 @@ class FinanceManagementScreen extends StatelessWidget {
       actions: [
         ElevatedButton.icon(
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Generating Financial Report...')),
-            );
+            AppSnackBar.showInfo(context, 'Generating Financial Report...');
           },
           icon: const Icon(Icons.receipt_long, size: 18),
           label: const Text('Generate Report'),

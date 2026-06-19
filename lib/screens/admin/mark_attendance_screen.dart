@@ -12,6 +12,8 @@ import '../../theme.dart';
 import '../../widgets/app_side_nav.dart';
 import '../../widgets/dashboard_shell.dart';
 import '../../core/constants/nav_items.dart';
+import '../../core/utils/app_snack_bar.dart';
+import '../../core/widgets/app_error_widget.dart';
 
 class MarkAttendanceScreen extends ConsumerWidget {
   const MarkAttendanceScreen({super.key});
@@ -70,11 +72,11 @@ class MarkAttendanceScreen extends ConsumerWidget {
                       records: records,
                     ),
                     loading: () => const Center(child: CircularProgressIndicator()),
-                    error: (error, _) => _ErrorState(message: '$error'),
+                    error: (error, _) => AppErrorWidget(error: error),
                   );
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, _) => _ErrorState(message: '$error'),
+                error: (error, _) => AppErrorWidget(error: error),
               ),
             ),
           ],
@@ -244,8 +246,10 @@ class _AttendanceList extends ConsumerWidget {
                         final controllerState = ref.read(attendanceControllerProvider);
                         if (!context.mounted) return;
                         if (controllerState.hasError) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('${controllerState.error}')),
+                          AppSnackBar.showError(
+                            context,
+                            'Failed to mark attendance',
+                            detail: controllerState.error.toString().replaceFirst('Exception: ', ''),
                           );
                         }
                       },
@@ -295,25 +299,6 @@ class _SummaryTile extends StatelessWidget {
   }
 }
 
-class _ErrorState extends StatelessWidget {
-  final String message;
-
-  const _ErrorState({required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.error_outline, color: AppColors.error, size: 40),
-          const SizedBox(height: 12),
-          Text(message, textAlign: TextAlign.center),
-        ],
-      ),
-    );
-  }
-}
 
 class _AttendancePerson {
   final String id;

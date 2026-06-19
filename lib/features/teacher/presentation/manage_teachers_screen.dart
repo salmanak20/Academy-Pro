@@ -6,6 +6,8 @@ import '../../../theme.dart';
 import '../../../widgets/app_side_nav.dart';
 import '../../../widgets/dashboard_shell.dart';
 import '../../../core/constants/nav_items.dart';
+import '../../../core/utils/app_snack_bar.dart';
+import '../../../core/widgets/app_error_widget.dart';
 
 class ManageTeachersScreen extends ConsumerWidget {
   const ManageTeachersScreen({super.key});
@@ -89,7 +91,7 @@ class ManageTeachersScreen extends ConsumerWidget {
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (e, st) => Center(child: Text('Error: $e')),
+          error: (e, st) => AppErrorWidget(error: e),
         ),
       ),
     );
@@ -193,14 +195,14 @@ class ManageTeachersScreen extends ConsumerWidget {
                     Navigator.pop(dialogContext); // pop loading
 
                     if (state.hasError) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: ${state.error}')));
+                      AppSnackBar.showError(context, 'Operation failed', detail: state.error.toString());
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(teacher == null ? 'Teacher added successfully' : 'Teacher updated successfully')));
+                      AppSnackBar.showSuccess(context, teacher == null ? 'Teacher added successfully' : 'Teacher updated');
                       Navigator.pop(dialogContext); // pop form dialog
                     }
                   } catch (e) {
                     Navigator.pop(dialogContext); // pop loading
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+                    AppSnackBar.showError(context, 'Operation failed', detail: e.toString().replaceFirst('Exception: ', ''));
                   }
                 }
               },

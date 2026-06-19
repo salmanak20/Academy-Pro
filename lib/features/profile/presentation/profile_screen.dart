@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../auth/presentation/providers/auth_provider.dart';
+import '../../../core/utils/app_snack_bar.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -48,11 +49,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ref.invalidate(authControllerProvider);
       
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile picture updated!')));
+        AppSnackBar.showSuccess(context, 'Profile picture updated!');
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to update picture: $e')));
+        AppSnackBar.showError(context, 'Upload failed',
+            detail: e.toString().replaceFirst('Exception: ', ''));
       }
     } finally {
       if (mounted) {

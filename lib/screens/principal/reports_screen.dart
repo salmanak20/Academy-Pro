@@ -8,6 +8,7 @@ import '../../features/teacher/application/teacher_controller.dart';
 import '../../features/attendance/application/attendance_controller.dart';
 import '../../features/attendance/domain/attendance.dart';
 import '../../core/constants/nav_items.dart';
+import '../../core/widgets/app_error_widget.dart';
 
 class ReportsScreen extends ConsumerWidget {
   const ReportsScreen({super.key});
@@ -218,7 +219,7 @@ class ReportsScreen extends ConsumerWidget {
         ),
         error: (e, _) => Padding(
           padding: const EdgeInsets.all(24),
-          child: Text('Error: $e', style: const TextStyle(color: AppColors.error)),
+          child: AppErrorWidget(error: e, compact: true),
         ),
       ),
     );
@@ -303,7 +304,7 @@ class ReportsScreen extends ConsumerWidget {
         ),
         error: (e, _) => Padding(
           padding: const EdgeInsets.all(24),
-          child: Text('Error: $e', style: const TextStyle(color: AppColors.error)),
+          child: AppErrorWidget(error: e, compact: true),
         ),
       ),
     );
@@ -391,7 +392,7 @@ class ReportsScreen extends ConsumerWidget {
         ),
         error: (e, _) => Padding(
           padding: const EdgeInsets.all(24),
-          child: Text('Error: $e', style: const TextStyle(color: AppColors.error)),
+          child: AppErrorWidget(error: e, compact: true),
         ),
       ),
     );

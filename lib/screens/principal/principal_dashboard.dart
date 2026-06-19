@@ -7,6 +7,8 @@ import '../../widgets/app_side_nav.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
 import '../../features/academy/application/academy_controller.dart';
 import '../../core/constants/nav_items.dart';
+import '../../core/utils/app_snack_bar.dart';
+import '../../core/widgets/app_error_widget.dart';
 
 class PrincipalDashboard extends ConsumerWidget {
   const PrincipalDashboard({super.key});
@@ -130,7 +132,7 @@ class PrincipalDashboard extends ConsumerWidget {
         });
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, st) => Center(child: Text('Error: $e')),
+      error: (e, st) => AppErrorWidget(error: e),
     );
   }
 
@@ -211,12 +213,12 @@ class PrincipalDashboard extends ConsumerWidget {
             _ActionButton(
               icon: Icons.person_add, 
               label: 'Add Student', 
-              onTap: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Add Student Flow Started'))),
+              onTap: () => AppSnackBar.showInfo(context, 'Add Student', detail: 'Navigate to the Students section to enroll.'),
             ),
             _ActionButton(
               icon: Icons.assignment_ind, 
               label: 'Add Teacher',
-              onTap: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Add Teacher Flow Started'))),
+              onTap: () => AppSnackBar.showInfo(context, 'Add Teacher', detail: 'Navigate to the Teachers section to register.'),
             ),
             _ActionButton(
               icon: Icons.checklist, 
@@ -227,7 +229,7 @@ class PrincipalDashboard extends ConsumerWidget {
               icon: Icons.summarize, 
               label: 'Generate Reports', 
               isSecondary: true,
-              onTap: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Generating Institutional Report...'))),
+              onTap: () => AppSnackBar.showInfo(context, 'Generating Report', detail: 'Report generation coming soon.'),
             ),
           ],
         ),
@@ -321,7 +323,7 @@ class PrincipalDashboard extends ConsumerWidget {
               const Text('Department Leads', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary)),
               TextButton(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Viewing All Faculty Directory...')));
+                  AppSnackBar.showInfo(context, 'Faculty Directory', detail: 'Viewing All Faculty Directory...');
                 }, 
                 child: const Text('View All Faculty'),
               ),

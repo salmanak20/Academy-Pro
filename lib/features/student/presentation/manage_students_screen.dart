@@ -6,6 +6,8 @@ import '../../../theme.dart';
 import '../../../widgets/app_side_nav.dart';
 import '../../../widgets/dashboard_shell.dart';
 import '../../../core/constants/nav_items.dart';
+import '../../../core/utils/app_snack_bar.dart';
+import '../../../core/widgets/app_error_widget.dart';
 
 class ManageStudentsScreen extends ConsumerWidget {
   const ManageStudentsScreen({super.key});
@@ -229,8 +231,8 @@ class ManageStudentsScreen extends ConsumerWidget {
                         child: Center(child: CircularProgressIndicator()),
                       ),
                       error: (e, st) => Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Center(child: Text('Error loading students: $e', style: const TextStyle(color: AppColors.error))),
+                        padding: const EdgeInsets.all(16.0),
+                        child: AppErrorWidget(error: e, compact: true),
                       ),
                     ),
                     const Divider(height: 1, color: AppColors.outlineVariant),
@@ -446,14 +448,14 @@ class ManageStudentsScreen extends ConsumerWidget {
                     Navigator.pop(dialogContext); // pop loading
 
                     if (state.hasError) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: ${state.error}')));
+                      AppSnackBar.showError(context, 'Operation failed', detail: state.error.toString());
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(student == null ? 'Student enrolled successfully' : 'Student updated successfully')));
+                      AppSnackBar.showSuccess(context, student == null ? 'Student enrolled successfully' : 'Student updated');
                       Navigator.pop(dialogContext); // pop form dialog
                     }
                   } catch (e) {
                     Navigator.pop(dialogContext); // pop loading
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+                    AppSnackBar.showError(context, 'Operation failed', detail: e.toString().replaceFirst('Exception: ', ''));
                   }
                 }
               },

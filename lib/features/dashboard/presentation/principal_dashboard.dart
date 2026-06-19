@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../auth/presentation/providers/auth_provider.dart';
 import '../../student/application/student_controller.dart';
 import '../../teacher/application/teacher_controller.dart';
+import '../../../core/widgets/app_error_widget.dart';
 
 class PrincipalDashboard extends ConsumerWidget {
   const PrincipalDashboard({super.key});
@@ -156,7 +157,7 @@ class PrincipalDashboard extends ConsumerWidget {
                 style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
               loading: () => const CircularProgressIndicator(),
-              error: (e, st) => const Text('Error', style: TextStyle(color: Colors.red)),
+              error: (e, st) => const Icon(Icons.error_outline, color: Color(0xFFBA1A1A)),
             ),
             const SizedBox(height: 8),
             Text(
