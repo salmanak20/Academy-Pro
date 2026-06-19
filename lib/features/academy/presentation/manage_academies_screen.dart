@@ -207,7 +207,7 @@ class ManageAcademiesScreen extends ConsumerWidget {
                     Navigator.pop(dialogContext);
 
                     if (state.hasError) {
-                      AppSnackBar.showError(context, 'Operation failed', detail: state.error.toString());
+                      AppSnackBar.showError(context, 'Failed to save academy', detail: state.error.toString());
                     } else {
                       AppSnackBar.showSuccess(context, academy == null ? 'Academy created successfully!' : 'Academy updated successfully!');
                       // Pop the form dialog
@@ -216,7 +216,7 @@ class ManageAcademiesScreen extends ConsumerWidget {
                   } catch (e) {
                     // Pop loading dialog
                     Navigator.pop(dialogContext);
-                    AppSnackBar.showError(context, 'Operation failed', detail: e.toString().replaceFirst('Exception: ', ''));
+                    AppSnackBar.showError(context, 'Failed to save academy', detail: e.toString().replaceFirst('Exception: ', ''));
                   }
                 }
               },

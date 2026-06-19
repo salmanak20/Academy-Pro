@@ -195,14 +195,14 @@ class ManageTeachersScreen extends ConsumerWidget {
                     Navigator.pop(dialogContext); // pop loading
 
                     if (state.hasError) {
-                      AppSnackBar.showError(context, 'Operation failed', detail: state.error.toString());
+                      AppSnackBar.showError(context, 'Failed to save teacher', detail: state.error.toString());
                     } else {
                       AppSnackBar.showSuccess(context, teacher == null ? 'Teacher added successfully' : 'Teacher updated');
                       Navigator.pop(dialogContext); // pop form dialog
                     }
                   } catch (e) {
                     Navigator.pop(dialogContext); // pop loading
-                    AppSnackBar.showError(context, 'Operation failed', detail: e.toString().replaceFirst('Exception: ', ''));
+                    AppSnackBar.showError(context, 'Failed to save teacher', detail: e.toString().replaceFirst('Exception: ', ''));
                   }
                 }
               },

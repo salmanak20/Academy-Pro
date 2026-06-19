@@ -448,14 +448,14 @@ class ManageStudentsScreen extends ConsumerWidget {
                     Navigator.pop(dialogContext); // pop loading
 
                     if (state.hasError) {
-                      AppSnackBar.showError(context, 'Operation failed', detail: state.error.toString());
+                      AppSnackBar.showError(context, 'Failed to save student', detail: state.error.toString());
                     } else {
                       AppSnackBar.showSuccess(context, student == null ? 'Student enrolled successfully' : 'Student updated');
                       Navigator.pop(dialogContext); // pop form dialog
                     }
                   } catch (e) {
                     Navigator.pop(dialogContext); // pop loading
-                    AppSnackBar.showError(context, 'Operation failed', detail: e.toString().replaceFirst('Exception: ', ''));
+                    AppSnackBar.showError(context, 'Failed to save student', detail: e.toString().replaceFirst('Exception: ', ''));
                   }
                 }
               },

@@ -309,22 +309,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     ),
                                   ],
                                 ),
-                                TextButton(
-                                  onPressed: () {},
-                                  style: TextButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    minimumSize: Size.zero,
-                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  ),
-                                  child: const Text(
-                                    'Forgot Password?',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xFF115CB9),
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
                             const SizedBox(height: 24),
@@ -365,47 +349,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                           Icon(Icons.arrow_forward, size: 20),
                                         ],
                                       ),
-                              ),
-                            ),
-                            const SizedBox(height: 32),
-                            // Footer Links
-                            Container(
-                              padding: const EdgeInsets.only(top: 16),
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(
-                                    color: Color.fromRGBO(195, 198, 209, 0.3),
-                                  ),
-                                ),
-                              ),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      'Need help? ',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF43474F),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {},
-                                      style: TextButton.styleFrom(
-                                        padding: EdgeInsets.zero,
-                                        minimumSize: Size.zero,
-                                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                      ),
-                                      child: const Text(
-                                        'Contact IT Support',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF115CB9),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ),
                             ),
                           ],
