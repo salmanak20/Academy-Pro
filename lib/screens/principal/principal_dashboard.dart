@@ -23,8 +23,8 @@ class PrincipalDashboard extends ConsumerWidget {
         NavItemData(icon: Icons.person, label: 'Teachers', route: '/principal/teachers'),
         NavItemData(icon: Icons.payments, label: 'Finance', route: '/principal/finance'),
         NavItemData(icon: Icons.event_available, label: 'Attendance', route: '/principal/attendance'),
-        NavItemData(icon: Icons.analytics, label: 'Reports'),
-        NavItemData(icon: Icons.settings, label: 'Change Password', route: '/principal/change-password'),
+        NavItemData(icon: Icons.analytics, label: 'Reports', route: '/principal/reports'),
+
       ],
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),

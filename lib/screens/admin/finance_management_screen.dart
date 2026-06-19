@@ -18,7 +18,7 @@ class FinanceManagementScreen extends StatelessWidget {
         NavItemData(icon: Icons.payments, label: 'Finance', route: '/principal/finance'),
         NavItemData(icon: Icons.event_available, label: 'Attendance', route: '/principal/attendance'),
         NavItemData(icon: Icons.analytics, label: 'Reports', route: '/principal/reports'),
-        NavItemData(icon: Icons.settings, label: 'Settings'),
+
       ],
       actions: [
         ElevatedButton.icon(

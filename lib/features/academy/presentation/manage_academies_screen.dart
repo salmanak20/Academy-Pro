@@ -28,11 +28,7 @@ class ManageAcademiesScreen extends ConsumerWidget {
           label: 'Academies',
           route: '/admin/academies',
         ),
-        NavItemData(
-          icon: Icons.settings,
-          label: 'Settings',
-          route: '/admin/settings', // Add route if it exists, otherwise keep as is
-        ),
+
       ],
       actions: [
         ElevatedButton.icon(
