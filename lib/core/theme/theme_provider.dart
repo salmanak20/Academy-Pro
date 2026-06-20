@@ -6,16 +6,14 @@ final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError();
 });
 
-final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>((ref) {
-  final prefs = ref.watch(sharedPreferencesProvider);
-  return ThemeNotifier(prefs);
-});
-
-class ThemeNotifier extends StateNotifier<ThemeMode> {
-  final SharedPreferences _prefs;
+class ThemeNotifier extends Notifier<ThemeMode> {
   static const _themeKey = 'theme_mode';
 
-  ThemeNotifier(this._prefs) : super(_loadTheme(_prefs));
+  @override
+  ThemeMode build() {
+    final prefs = ref.watch(sharedPreferencesProvider);
+    return _loadTheme(prefs);
+  }
 
   static ThemeMode _loadTheme(SharedPreferences prefs) {
     final savedTheme = prefs.getString(_themeKey);
@@ -26,9 +24,14 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
 
   Future<void> setTheme(ThemeMode mode) async {
     state = mode;
+    final prefs = ref.read(sharedPreferencesProvider);
     String modeString = 'system';
     if (mode == ThemeMode.light) modeString = 'light';
     if (mode == ThemeMode.dark) modeString = 'dark';
-    await _prefs.setString(_themeKey, modeString);
+    await prefs.setString(_themeKey, modeString);
   }
 }
+
+final themeProvider = NotifierProvider<ThemeNotifier, ThemeMode>(() {
+  return ThemeNotifier();
+});
