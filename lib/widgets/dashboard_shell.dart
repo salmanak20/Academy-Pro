@@ -100,22 +100,37 @@ class _Header extends StatelessWidget {
               icon: const Icon(Icons.menu),
               onPressed: () => Scaffold.of(context).openDrawer(),
             ),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: AppColors.primary,
-                ),
+          Expanded(
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: showMenu ? 16 : 20,
+                    color: AppColors.primary,
+                  ),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-          const Spacer(),
-          if (actions != null) ...actions!,
-          const SizedBox(width: 16),
-          const _SearchBar(),
-          const SizedBox(width: 16),
-          const _HeaderIcons(),
-          const SizedBox(width: 16),
-          const _UserProfile(),
+          const SizedBox(width: 8),
+          Flexible(
+            flex: 2,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              reverse: true,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (actions != null) ...actions!,
+                  const SizedBox(width: 8),
+                  const _SearchBar(),
+                  const SizedBox(width: 8),
+                  const _HeaderIcons(),
+                  const SizedBox(width: 8),
+                  const _UserProfile(),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

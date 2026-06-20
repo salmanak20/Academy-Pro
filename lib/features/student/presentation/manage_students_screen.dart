@@ -30,9 +30,11 @@ class ManageStudentsScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Page Header
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                runSpacing: 16,
+                spacing: 16,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +54,9 @@ class ManageStudentsScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  Row(
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 12,
                     children: [
                       OutlinedButton.icon(
                         onPressed: () {},
@@ -64,7 +68,6 @@ class ManageStudentsScreen extends ConsumerWidget {
                           side: BorderSide(color: AppColors.outlineVariant.withOpacity(0.5)),
                         ),
                       ),
-                      const SizedBox(width: 12),
                       ElevatedButton.icon(
                         onPressed: () => _showStudentDialog(context, ref),
                         icon: const Icon(Icons.add, size: 20),
@@ -94,10 +97,14 @@ class ManageStudentsScreen extends ConsumerWidget {
                     // Table Toolbar
                     Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Wrap(
+                        alignment: WrapAlignment.spaceBetween,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        runSpacing: 16,
+                        spacing: 16,
                         children: [
                           Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
                                 'All Students',
@@ -117,6 +124,7 @@ class ManageStudentsScreen extends ConsumerWidget {
                             ],
                           ),
                           Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
                                 icon: const Icon(Icons.view_column, color: AppColors.onSurfaceVariant, size: 20),
@@ -274,38 +282,72 @@ class ManageStudentsScreen extends ConsumerWidget {
   Widget academiesStatsGrid(AsyncValue<List<Student>> studentsAsync) {
     return studentsAsync.when(
       data: (students) {
-        return Row(
-          children: [
-            Expanded(
-              child: _StatCard(
-                title: 'Total Students',
-                value: students.length.toString(),
-                trend: '',
-                trendIcon: Icons.trending_flat,
-                trendColor: const Color(0xFF10B981),
-                bgDecoration: const Color(0xFF115CB9).withOpacity(0.05), // Secondary
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: _StatCard(
-                title: 'New Enrollments',
-                value: '0',
-                bgDecoration: const Color(0xFFFFE16D).withOpacity(0.2), // Tertiary
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: _StatCard(
-                title: 'Action Required',
-                value: '0',
-                trend: 'None',
-                trendColor: AppColors.onSurfaceVariant,
-                valueColor: AppColors.primary,
-                bgDecoration: AppColors.primary.withOpacity(0.05),
-              ),
-            ),
-          ],
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final isMobile = constraints.maxWidth < 768;
+            if (isMobile) {
+              return Column(
+                children: [
+                  _StatCard(
+                    title: 'Total Students',
+                    value: students.length.toString(),
+                    trend: '',
+                    trendIcon: Icons.trending_flat,
+                    trendColor: const Color(0xFF10B981),
+                    bgDecoration: const Color(0xFF115CB9).withOpacity(0.05),
+                  ),
+                  const SizedBox(height: 16),
+                  _StatCard(
+                    title: 'New Enrollments',
+                    value: '0',
+                    bgDecoration: const Color(0xFFFFE16D).withOpacity(0.2),
+                  ),
+                  const SizedBox(height: 16),
+                  _StatCard(
+                    title: 'Action Required',
+                    value: '0',
+                    trend: 'None',
+                    trendColor: AppColors.onSurfaceVariant,
+                    valueColor: AppColors.primary,
+                    bgDecoration: AppColors.primary.withOpacity(0.05),
+                  ),
+                ],
+              );
+            }
+            return Row(
+              children: [
+                Expanded(
+                  child: _StatCard(
+                    title: 'Total Students',
+                    value: students.length.toString(),
+                    trend: '',
+                    trendIcon: Icons.trending_flat,
+                    trendColor: const Color(0xFF10B981),
+                    bgDecoration: const Color(0xFF115CB9).withOpacity(0.05), // Secondary
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _StatCard(
+                    title: 'New Enrollments',
+                    value: '0',
+                    bgDecoration: const Color(0xFFFFE16D).withOpacity(0.2), // Tertiary
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _StatCard(
+                    title: 'Action Required',
+                    value: '0',
+                    trend: 'None',
+                    trendColor: AppColors.onSurfaceVariant,
+                    valueColor: AppColors.primary,
+                    bgDecoration: AppColors.primary.withOpacity(0.05),
+                  ),
+                ),
+              ],
+            );
+          }
         );
       },
       loading: () => const SizedBox(height: 120, child: Center(child: CircularProgressIndicator())),

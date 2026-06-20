@@ -33,9 +33,11 @@ class AdminDashboard extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Page Header
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                runSpacing: 16,
+                spacing: 16,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,40 +77,76 @@ class AdminDashboard extends ConsumerWidget {
                   final activeCount = academies.where((a) => a.status == AcademyStatus.active).length;
                   final disabledCount = academies.length - activeCount;
 
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: _StatCard(
-                          title: 'Total Academies',
-                          value: academies.length.toString(),
-                          icon: Icons.domain,
-                          color: AppColors.secondary,
-                          bgColor: AppColors.secondary.withOpacity(0.1),
-                          trend: '12%',
-                        ),
-                      ),
-                      const SizedBox(width: 24),
-                      Expanded(
-                        child: _StatCard(
-                          title: 'Active Academies',
-                          value: activeCount.toString(),
-                          icon: Icons.check_circle,
-                          color: const Color(0xFF10B981), // Emerald
-                          bgColor: const Color(0xFF10B981).withOpacity(0.1),
-                          trend: '5%',
-                        ),
-                      ),
-                      const SizedBox(width: 24),
-                      Expanded(
-                        child: _StatCard(
-                          title: 'Disabled Academies',
-                          value: disabledCount.toString(),
-                          icon: Icons.cancel,
-                          color: AppColors.error,
-                          bgColor: AppColors.error.withOpacity(0.1),
-                        ),
-                      ),
-                    ],
+                  return LayoutBuilder(
+                    builder: (context, constraints) {
+                      final isMobile = constraints.maxWidth < 768;
+                      if (isMobile) {
+                        return Column(
+                          children: [
+                            _StatCard(
+                              title: 'Total Academies',
+                              value: academies.length.toString(),
+                              icon: Icons.domain,
+                              color: AppColors.secondary,
+                              bgColor: AppColors.secondary.withOpacity(0.1),
+                              trend: '12%',
+                            ),
+                            const SizedBox(height: 16),
+                            _StatCard(
+                              title: 'Active Academies',
+                              value: activeCount.toString(),
+                              icon: Icons.check_circle,
+                              color: const Color(0xFF10B981), // Emerald
+                              bgColor: const Color(0xFF10B981).withOpacity(0.1),
+                              trend: '5%',
+                            ),
+                            const SizedBox(height: 16),
+                            _StatCard(
+                              title: 'Disabled Academies',
+                              value: disabledCount.toString(),
+                              icon: Icons.cancel,
+                              color: AppColors.error,
+                              bgColor: AppColors.error.withOpacity(0.1),
+                            ),
+                          ],
+                        );
+                      }
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: _StatCard(
+                              title: 'Total Academies',
+                              value: academies.length.toString(),
+                              icon: Icons.domain,
+                              color: AppColors.secondary,
+                              bgColor: AppColors.secondary.withOpacity(0.1),
+                              trend: '12%',
+                            ),
+                          ),
+                          const SizedBox(width: 24),
+                          Expanded(
+                            child: _StatCard(
+                              title: 'Active Academies',
+                              value: activeCount.toString(),
+                              icon: Icons.check_circle,
+                              color: const Color(0xFF10B981), // Emerald
+                              bgColor: const Color(0xFF10B981).withOpacity(0.1),
+                              trend: '5%',
+                            ),
+                          ),
+                          const SizedBox(width: 24),
+                          Expanded(
+                            child: _StatCard(
+                              title: 'Disabled Academies',
+                              value: disabledCount.toString(),
+                              icon: Icons.cancel,
+                              color: AppColors.error,
+                              bgColor: AppColors.error.withOpacity(0.1),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
                   );
                 },
                 loading: () => const SizedBox(

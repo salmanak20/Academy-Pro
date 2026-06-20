@@ -112,28 +112,54 @@ class PrincipalDashboard extends ConsumerWidget {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 24),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildStatCard(
-                    context,
-                    title: 'Total Students',
-                    asyncValue: studentsAsync,
-                    icon: Icons.school,
-                    color: Colors.orange,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildStatCard(
-                    context,
-                    title: 'Total Teachers',
-                    asyncValue: teachersAsync,
-                    icon: Icons.person,
-                    color: Colors.purple,
-                  ),
-                ),
-              ],
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final isMobile = constraints.maxWidth < 600;
+                if (isMobile) {
+                  return Column(
+                    children: [
+                      _buildStatCard(
+                        context,
+                        title: 'Total Students',
+                        asyncValue: studentsAsync,
+                        icon: Icons.school,
+                        color: Colors.orange,
+                      ),
+                      const SizedBox(height: 16),
+                      _buildStatCard(
+                        context,
+                        title: 'Total Teachers',
+                        asyncValue: teachersAsync,
+                        icon: Icons.person,
+                        color: Colors.purple,
+                      ),
+                    ],
+                  );
+                }
+                return Row(
+                  children: [
+                    Expanded(
+                      child: _buildStatCard(
+                        context,
+                        title: 'Total Students',
+                        asyncValue: studentsAsync,
+                        icon: Icons.school,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: _buildStatCard(
+                        context,
+                        title: 'Total Teachers',
+                        asyncValue: teachersAsync,
+                        icon: Icons.person,
+                        color: Colors.purple,
+                      ),
+                    ),
+                  ],
+                );
+              }
             ),
           ],
         ),
