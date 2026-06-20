@@ -125,46 +125,55 @@ class ManageAcademiesScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (dialogContext) {
-        return AlertDialog(
-          title: Text(academy == null ? 'Add Academy' : 'Edit Academy'),
-          content: Form(
-            key: formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextFormField(
-                    controller: nameController,
-                    decoration: const InputDecoration(labelText: 'Academy Name'),
-                    validator: (v) => v!.isEmpty ? 'Required' : null,
+        bool obscurePassword = true;
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(academy == null ? 'Add Academy' : 'Edit Academy'),
+              content: Form(
+                key: formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextFormField(
+                        controller: nameController,
+                        decoration: const InputDecoration(labelText: 'Academy Name'),
+                        validator: (v) => v!.isEmpty ? 'Required' : null,
+                      ),
+                      TextFormField(
+                        controller: addressController,
+                        decoration: const InputDecoration(labelText: 'Address'),
+                        validator: (v) => v!.isEmpty ? 'Required' : null,
+                      ),
+                      TextFormField(
+                        controller: contactController,
+                        decoration: const InputDecoration(labelText: 'Contact Number'),
+                        validator: (v) => v!.isEmpty ? 'Required' : null,
+                      ),
+                      if (academy == null) ...[
+                        TextFormField(
+                          controller: principalEmailController,
+                          decoration: const InputDecoration(labelText: 'Principal Email'),
+                          validator: (v) => v!.isEmpty ? 'Required' : (!v.contains('@') ? 'Invalid email' : null),
+                        ),
+                        TextFormField(
+                          controller: principalPasswordController,
+                          decoration: InputDecoration(
+                            labelText: 'Principal Password',
+                            suffixIcon: IconButton(
+                              icon: Icon(obscurePassword ? Icons.visibility_off : Icons.visibility),
+                              onPressed: () => setState(() => obscurePassword = !obscurePassword),
+                            ),
+                          ),
+                          obscureText: obscurePassword,
+                          validator: (v) => v!.isEmpty ? 'Required' : (v.length < 6 ? 'Min 6 chars' : null),
+                        ),
+                      ],
+                    ],
                   ),
-                  TextFormField(
-                    controller: addressController,
-                    decoration: const InputDecoration(labelText: 'Address'),
-                    validator: (v) => v!.isEmpty ? 'Required' : null,
-                  ),
-                  TextFormField(
-                    controller: contactController,
-                    decoration: const InputDecoration(labelText: 'Contact Number'),
-                    validator: (v) => v!.isEmpty ? 'Required' : null,
-                  ),
-                  if (academy == null) ...[
-                    TextFormField(
-                      controller: principalEmailController,
-                      decoration: const InputDecoration(labelText: 'Principal Email'),
-                      validator: (v) => v!.isEmpty ? 'Required' : (!v.contains('@') ? 'Invalid email' : null),
-                    ),
-                    TextFormField(
-                      controller: principalPasswordController,
-                      decoration: const InputDecoration(labelText: 'Principal Password'),
-                      obscureText: true,
-                      validator: (v) => v!.isEmpty ? 'Required' : (v.length < 6 ? 'Min 6 chars' : null),
-                    ),
-                  ],
-                ],
+                ),
               ),
-            ),
-          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
@@ -223,6 +232,8 @@ class ManageAcademiesScreen extends ConsumerWidget {
               child: Text(academy == null ? 'Create' : 'Save'),
             ),
           ],
+        );
+          },
         );
       },
     );

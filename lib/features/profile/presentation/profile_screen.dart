@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../auth/presentation/providers/auth_provider.dart';
 import '../../../core/utils/app_snack_bar.dart';
+import '../../../core/theme/theme_provider.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -63,6 +64,50 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     }
   }
 
+  void _showEditNameDialog(String currentName) {
+    final controller = TextEditingController(text: currentName);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Edit Name'),
+          content: TextField(
+            controller: controller,
+            decoration: const InputDecoration(labelText: 'Name'),
+            autofocus: true,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final newName = controller.text.trim();
+                if (newName.isEmpty) return;
+                
+                Navigator.pop(context);
+                final user = FirebaseAuth.instance.currentUser;
+                if (user == null) return;
+
+                try {
+                  await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+                    'name': newName,
+                  });
+                  ref.invalidate(authControllerProvider);
+                  if (mounted) AppSnackBar.showSuccess(context, 'Name updated!');
+                } catch (e) {
+                  if (mounted) AppSnackBar.showError(context, 'Update failed', detail: e.toString());
+                }
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final userAsync = ref.watch(authControllerProvider);
@@ -75,7 +120,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
       body: Center(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
@@ -109,9 +154,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              Text(
-                user.name ?? 'No Name',
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    user.name ?? 'No Name',
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.edit, size: 20),
+                    onPressed: () => _showEditNameDialog(user.name ?? ''),
+                    tooltip: 'Edit Name',
+                  ),
+                ],
               ),
               const SizedBox(height: 8),
               Text(
@@ -128,6 +183,25 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 child: Text(
                   user.role,
                   style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(height: 48),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.brightness_6),
+                title: const Text('Theme Mode'),
+                trailing: DropdownButton<ThemeMode>(
+                  value: ref.watch(themeProvider),
+                  onChanged: (mode) {
+                    if (mode != null) {
+                      ref.read(themeProvider.notifier).setTheme(mode);
+                    }
+                  },
+                  items: const [
+                    DropdownMenuItem(value: ThemeMode.system, child: Text('System')),
+                    DropdownMenuItem(value: ThemeMode.light, child: Text('Light')),
+                    DropdownMenuItem(value: ThemeMode.dark, child: Text('Dark')),
+                  ],
                 ),
               ),
             ],

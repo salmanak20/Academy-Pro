@@ -196,7 +196,7 @@ class AppTheme {
         seedColor: AppColors.primary,
         brightness: Brightness.dark,
       ),
-      textTheme: GoogleFonts.interTextTheme(),
+      textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
       appBarTheme: const AppBarTheme(
         centerTitle: true,
         elevation: 0,

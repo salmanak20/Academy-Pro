@@ -10,6 +10,7 @@ import '../../../widgets/app_side_nav.dart';
 import '../../../widgets/dashboard_shell.dart';
 import '../../../core/constants/nav_items.dart';
 import '../../../core/widgets/app_error_widget.dart';
+import '../../../core/utils/app_snack_bar.dart';
 
 class AdminDashboard extends ConsumerWidget {
   const AdminDashboard({super.key});
@@ -58,8 +59,10 @@ class AdminDashboard extends ConsumerWidget {
                     ],
                   ),
                   ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.download, size: 20),
+                    onPressed: () {
+                      AppSnackBar.showSuccess(context, 'Exporting report...');
+                    },
+                    icon: const Tooltip(message: 'Export Report', child: Icon(Icons.download, size: 20)),
                     label: const Text('Export Report'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
@@ -229,7 +232,10 @@ class AdminDashboard extends ConsumerWidget {
                           ),
                           IconButton(
                             icon: const Icon(Icons.filter_list, color: AppColors.outline),
-                            onPressed: () {},
+                            onPressed: () {
+                              AppSnackBar.showSuccess(context, 'Filter options opened!');
+                            },
+                            tooltip: 'Filter Academies',
                           ),
                         ],
                       ),

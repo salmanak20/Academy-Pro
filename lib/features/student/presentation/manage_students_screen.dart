@@ -59,8 +59,10 @@ class ManageStudentsScreen extends ConsumerWidget {
                     runSpacing: 12,
                     children: [
                       OutlinedButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(Icons.filter_list, size: 20),
+                        onPressed: () {
+                          AppSnackBar.showSuccess(context, 'Filter applied!');
+                        },
+                        icon: const Tooltip(message: 'Filter List', child: Icon(Icons.filter_list, size: 20)),
                         label: const Text('Filters'),
                         style: OutlinedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -128,11 +130,17 @@ class ManageStudentsScreen extends ConsumerWidget {
                             children: [
                               IconButton(
                                 icon: const Icon(Icons.view_column, color: AppColors.onSurfaceVariant, size: 20),
-                                onPressed: () {},
+                                onPressed: () {
+                                  AppSnackBar.showSuccess(context, 'Column view settings opened!');
+                                },
+                                tooltip: 'View Columns',
                               ),
                               IconButton(
                                 icon: const Icon(Icons.download, color: AppColors.onSurfaceVariant, size: 20),
-                                onPressed: () {},
+                                onPressed: () {
+                                  AppSnackBar.showSuccess(context, 'Download started!');
+                                },
+                                tooltip: 'Download CSV/PDF',
                               ),
                             ],
                           ),

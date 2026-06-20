@@ -8,12 +8,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() {
+import 'package:shared_preferences/shared_preferences.dart';
+import 'core/theme/theme_provider.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
   
   runApp(
-    const ProviderScope(
-      child: AcademyProApp(),
+    ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+      ],
+      child: const AcademyProApp(),
     ),
   );
 }
@@ -44,6 +51,7 @@ class AcademyProApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final firebaseInit = ref.watch(firebaseInitializerProvider);
+    final themeMode = ref.watch(themeProvider);
 
     // Use a single MaterialApp.router at the top level
     return firebaseInit.when(
@@ -54,7 +62,7 @@ class AcademyProApp extends ConsumerWidget {
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
-          themeMode: ThemeMode.system,
+          themeMode: themeMode,
           routerConfig: router,
         );
       },

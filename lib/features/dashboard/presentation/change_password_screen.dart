@@ -18,6 +18,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final _confirmPasswordController = TextEditingController();
   bool _isLoading = false;
   String? _errorMessage;
+  bool _obscureCurrent = true;
+  bool _obscureNew = true;
+  bool _obscureConfirm = true;
 
   @override
   void dispose() {
@@ -128,22 +131,40 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               ],
               TextFormField(
                 controller: _currentPasswordController,
-                decoration: const InputDecoration(labelText: 'Current Password'),
-                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Current Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(_obscureCurrent ? Icons.visibility_off : Icons.visibility),
+                    onPressed: () => setState(() => _obscureCurrent = !_obscureCurrent),
+                  ),
+                ),
+                obscureText: _obscureCurrent,
                 validator: (v) => v!.isEmpty ? 'Required' : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _newPasswordController,
-                decoration: const InputDecoration(labelText: 'New Password'),
-                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'New Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(_obscureNew ? Icons.visibility_off : Icons.visibility),
+                    onPressed: () => setState(() => _obscureNew = !_obscureNew),
+                  ),
+                ),
+                obscureText: _obscureNew,
                 validator: (v) => v!.isEmpty ? 'Required' : (v.length < 6 ? 'Min 6 chars' : null),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _confirmPasswordController,
-                decoration: const InputDecoration(labelText: 'Confirm New Password'),
-                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Confirm New Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(_obscureConfirm ? Icons.visibility_off : Icons.visibility),
+                    onPressed: () => setState(() => _obscureConfirm = !_obscureConfirm),
+                  ),
+                ),
+                obscureText: _obscureConfirm,
                 validator: (v) {
                   if (v!.isEmpty) return 'Required';
                   if (v != _newPasswordController.text) return 'Passwords do not match';
