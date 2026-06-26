@@ -11,6 +11,7 @@ class Student {
   final String address;
   final double fee;
   final DateTime admissionDate;
+  final String gender;
 
   const Student({
     required this.id,
@@ -23,6 +24,7 @@ class Student {
     required this.address,
     required this.fee,
     required this.admissionDate,
+    this.gender = 'Not Specified',
   });
 
   Student copyWith({
@@ -33,6 +35,7 @@ class Student {
     String? phone,
     String? address,
     double? fee,
+    String? gender,
   }) {
     return Student(
       id: id,
@@ -45,6 +48,7 @@ class Student {
       address: address ?? this.address,
       fee: fee ?? this.fee,
       admissionDate: admissionDate,
+      gender: gender ?? this.gender,
     );
   }
 
@@ -60,6 +64,7 @@ class Student {
       address: data['address'] ?? '',
       fee: (data['fee'] ?? 0).toDouble(),
       admissionDate: (data['admissionDate'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      gender: data['gender'] ?? 'Not Specified',
     );
   }
 
@@ -76,6 +81,7 @@ class Student {
       'address': address,
       'fee': fee,
       'admissionDate': Timestamp.fromDate(admissionDate),
+      'gender': gender,
       'updatedAt': FieldValue.serverTimestamp(),
     };
   }

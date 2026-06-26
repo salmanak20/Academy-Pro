@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class IdGenerator {
   /// Generates a sequential ID formatted like 'PREFIX-0001'
   static Future<String> generateId(
-      String collectionPath, String prefix, String idField) async {
+      String collectionPath, String prefix, String idField, {int padding = 4}) async {
     final firestore = FirebaseFirestore.instance;
     final counterRef = firestore.collection('_counters').doc(collectionPath);
 
@@ -27,7 +27,7 @@ class IdGenerator {
       return next;
     });
 
-    return '$prefix-${nextNumber.toString().padLeft(4, '0')}';
+    return '$prefix-${nextNumber.toString().padLeft(padding, '0')}';
   }
 
   static Future<int> _readHighestExistingNumber(
@@ -68,10 +68,10 @@ class IdGenerator {
       generateId('academies', 'ACA', 'academyId');
 
   static Future<String> generateStudentId() =>
-      generateId('students', 'STD', 'studentId');
+      generateId('students', 'S', 'studentId', padding: 3);
 
   static Future<String> generateTeacherId() =>
-      generateId('teachers', 'TCH', 'teacherId');
+      generateId('teachers', 'T', 'teacherId', padding: 3);
 
   static Future<String> generateAttendanceId() =>
       generateId('attendances', 'ATT', 'attendanceId');

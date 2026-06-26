@@ -33,12 +33,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
       final storageRef = FirebaseStorage.instance.ref().child('profile_pictures/${user.uid}.jpg');
 
-      if (kIsWeb) {
-        final bytes = await image.readAsBytes();
-        await storageRef.putData(bytes, SettableMetadata(contentType: 'image/jpeg'));
-      } else {
-        await storageRef.putFile(File(image.path));
-      }
+      final bytes = await image.readAsBytes();
+      await storageRef.putData(bytes, SettableMetadata(contentType: 'image/jpeg'));
 
       final downloadUrl = await storageRef.getDownloadURL();
 

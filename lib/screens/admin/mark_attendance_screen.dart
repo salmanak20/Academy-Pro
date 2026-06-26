@@ -26,24 +26,26 @@ class MarkAttendanceScreen extends ConsumerWidget {
     final teachersAsync = ref.watch(teachersStreamProvider);
 
     final peopleAsync = state.selectedType == PersonType.student
-        ? studentsAsync.whenData(
-            (students) => students
+        ? studentsAsync.whenData((students) {
+            final sorted = students.toList()..sort((a, b) => a.id.compareTo(b.id));
+            return sorted
                 .map((student) => _AttendancePerson(
                       id: student.id,
                       name: student.name,
                       subtitle: 'Class ${student.studentClass} | Roll ${student.rollNumber}',
                     ))
-                .toList(),
-          )
-        : teachersAsync.whenData(
-            (teachers) => teachers
+                .toList();
+          })
+        : teachersAsync.whenData((teachers) {
+            final sorted = teachers.toList()..sort((a, b) => a.id.compareTo(b.id));
+            return sorted
                 .map((teacher) => _AttendancePerson(
                       id: teacher.id,
                       name: teacher.name,
                       subtitle: '${teacher.subject} | ${teacher.qualification}',
                     ))
-                .toList(),
-          );
+                .toList();
+          });
 
     return DashboardShell(
       title: 'Attendance',

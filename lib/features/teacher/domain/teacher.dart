@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Teacher {
   final String id;
   final String academyId;
@@ -9,6 +11,7 @@ class Teacher {
   final String phone;
   final double salary;
   final DateTime joiningDate;
+  final String gender;
 
   const Teacher({
     required this.id,
@@ -19,6 +22,7 @@ class Teacher {
     required this.phone,
     required this.salary,
     required this.joiningDate,
+    this.gender = 'Not Specified',
   });
 
   Teacher copyWith({
@@ -27,6 +31,7 @@ class Teacher {
     String? qualification,
     String? phone,
     double? salary,
+    String? gender,
   }) {
     return Teacher(
       id: id,
@@ -37,6 +42,7 @@ class Teacher {
       phone: phone ?? this.phone,
       salary: salary ?? this.salary,
       joiningDate: joiningDate,
+      gender: gender ?? this.gender,
     );
   }
 
@@ -50,6 +56,7 @@ class Teacher {
       phone: data['phone'] ?? '',
       salary: (data['salary'] as num?)?.toDouble() ?? 0.0,
       joiningDate: (data['joiningDate'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      gender: data['gender'] ?? 'Not Specified',
     );
   }
 
@@ -64,6 +71,7 @@ class Teacher {
       'phone': phone,
       'salary': salary,
       'joiningDate': Timestamp.fromDate(joiningDate),
+      'gender': gender,
       'updatedAt': FieldValue.serverTimestamp(),
     };
   }

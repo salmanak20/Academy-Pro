@@ -27,6 +27,7 @@ class StudentController extends _$StudentController {
     required String phone,
     required String address,
     required double fee,
+    required String gender,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -46,6 +47,7 @@ class StudentController extends _$StudentController {
         address: address,
         fee: fee,
         admissionDate: DateTime.now(),
+        gender: gender,
       );
       
       await ref.read(studentRepositoryProvider).createStudent(student);

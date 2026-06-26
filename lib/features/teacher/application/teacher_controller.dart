@@ -25,6 +25,7 @@ class TeacherController extends _$TeacherController {
     required String qualification,
     required String phone,
     required double salary,
+    required String gender,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -42,6 +43,7 @@ class TeacherController extends _$TeacherController {
         phone: phone,
         salary: salary,
         joiningDate: DateTime.now(),
+        gender: gender,
       );
       
       await ref.read(teacherRepositoryProvider).createTeacher(teacher);

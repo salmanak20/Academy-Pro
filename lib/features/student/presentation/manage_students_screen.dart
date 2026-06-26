@@ -152,7 +152,13 @@ class ManageStudentsScreen extends ConsumerWidget {
                     // Table Content
                     studentsAsync.when(
                       data: (students) {
-                        if (students.isEmpty) {
+                        final sortedStudents = students.toList()..sort((a, b) {
+                          final aRoll = int.tryParse(a.rollNumber) ?? 0;
+                          final bRoll = int.tryParse(b.rollNumber) ?? 0;
+                          if (aRoll != bRoll) return aRoll.compareTo(bRoll);
+                          return a.rollNumber.compareTo(b.rollNumber);
+                        });
+                        if (sortedStudents.isEmpty) {
                           return const Padding(
                             padding: EdgeInsets.all(48.0),
                             child: Center(child: Text('No students enrolled yet.', style: TextStyle(color: AppColors.onSurfaceVariant))),
@@ -172,7 +178,7 @@ class ManageStudentsScreen extends ConsumerWidget {
                               DataColumn(label: Text('Status', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurfaceVariant, fontSize: 12))),
                               DataColumn(label: Text('Actions', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurfaceVariant, fontSize: 12))),
                             ],
-                            rows: students.map((student) {
+                            rows: sortedStudents.map((student) {
                               return DataRow(
                                 cells: [
                                   DataCell(Text(student.id.length > 8 ? student.id.substring(0, 8).toUpperCase() : student.id, style: const TextStyle(fontWeight: FontWeight.w500, color: AppColors.primary))),
@@ -391,6 +397,7 @@ class ManageStudentsScreen extends ConsumerWidget {
     final phoneController = TextEditingController(text: student?.phone ?? '');
     final addressController = TextEditingController(text: student?.address ?? '');
     final feeController = TextEditingController(text: student?.fee.toString() ?? '');
+    String selectedGender = student?.gender == 'Not Specified' ? 'Male' : (student?.gender ?? 'Male');
     
     final formKey = GlobalKey<FormState>();
 
@@ -444,6 +451,19 @@ class ManageStudentsScreen extends ConsumerWidget {
                     validator: (v) => v!.isEmpty || double.tryParse(v) == null ? 'Invalid number' : null,
                   ),
                   const SizedBox(height: 12),
+                  DropdownButtonFormField<String>(
+                    value: selectedGender,
+                    decoration: const InputDecoration(labelText: 'Gender'),
+                    items: const [
+                      DropdownMenuItem(value: 'Male', child: Text('Male')),
+                      DropdownMenuItem(value: 'Female', child: Text('Female')),
+                      DropdownMenuItem(value: 'Other', child: Text('Other')),
+                    ],
+                    onChanged: (v) {
+                      if (v != null) selectedGender = v;
+                    },
+                  ),
+                  const SizedBox(height: 12),
                   TextFormField(
                     controller: addressController,
                     decoration: const InputDecoration(labelText: 'Address'),
@@ -478,6 +498,7 @@ class ManageStudentsScreen extends ConsumerWidget {
                             phone: phoneController.text,
                             address: addressController.text,
                             fee: fee,
+                            gender: selectedGender,
                           );
                     } else {
                       await ref.read(studentControllerProvider.notifier).updateStudent(
@@ -489,6 +510,7 @@ class ManageStudentsScreen extends ConsumerWidget {
                               phone: phoneController.text,
                               address: addressController.text,
                               fee: fee,
+                              gender: selectedGender,
                             ),
                           );
                     }

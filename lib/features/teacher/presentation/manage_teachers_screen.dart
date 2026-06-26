@@ -103,6 +103,7 @@ class ManageTeachersScreen extends ConsumerWidget {
     final qualificationController = TextEditingController(text: teacher?.qualification ?? '');
     final phoneController = TextEditingController(text: teacher?.phone ?? '');
     final salaryController = TextEditingController(text: teacher?.salary.toString() ?? '');
+    String selectedGender = teacher?.gender == 'Not Specified' ? 'Male' : (teacher?.gender ?? 'Male');
     
     final formKey = GlobalKey<FormState>();
 
@@ -142,6 +143,19 @@ class ManageTeachersScreen extends ConsumerWidget {
                     validator: (v) => v!.isEmpty ? 'Required' : null,
                   ),
                   const SizedBox(height: 12),
+                  DropdownButtonFormField<String>(
+                    value: selectedGender,
+                    decoration: const InputDecoration(labelText: 'Gender'),
+                    items: const [
+                      DropdownMenuItem(value: 'Male', child: Text('Male')),
+                      DropdownMenuItem(value: 'Female', child: Text('Female')),
+                      DropdownMenuItem(value: 'Other', child: Text('Other')),
+                    ],
+                    onChanged: (v) {
+                      if (v != null) selectedGender = v;
+                    },
+                  ),
+                  const SizedBox(height: 12),
                   TextFormField(
                     controller: salaryController,
                     decoration: const InputDecoration(labelText: 'Salary (Rs.)'),
@@ -177,6 +191,7 @@ class ManageTeachersScreen extends ConsumerWidget {
                             qualification: qualificationController.text,
                             phone: phoneController.text,
                             salary: salary,
+                            gender: selectedGender,
                           );
                     } else {
                       await ref.read(teacherControllerProvider.notifier).updateTeacher(
@@ -186,6 +201,7 @@ class ManageTeachersScreen extends ConsumerWidget {
                               qualification: qualificationController.text,
                               phone: phoneController.text,
                               salary: salary,
+                              gender: selectedGender,
                             ),
                           );
                     }
